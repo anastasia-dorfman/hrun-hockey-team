@@ -5,6 +5,7 @@ import ProfileCard from "../../components/Account/ProfileCard";
 import Wrapper from "../../assets/wrappers/Account/Settings";
 import { formatDate } from "../../utils/functions";
 import customFetch from "../../utils/customFetch";
+import { languageOptions } from "../../utils/clientConstants";
 import { toast } from "react-hot-toast";
 
 const Settings = () => {
@@ -26,16 +27,19 @@ const Settings = () => {
 
   const handleEditSubmit = async (name, value) => {
     try {
-      // let updatedData = { ...profileData };
       let updatedData = {};
       if (name === "password") {
         updatedData = { password: value };
-        console.log("password", updatedData);
       } else {
         updatedData[name] = value;
       }
+
+      console.log("Updating user data:", updatedData);
+
       const response = await customFetch.patch("/user", updatedData);
       const updatedUser = response.data.user;
+
+      console.log("Server response:", response.data);
 
       updateUser(updatedUser);
 
@@ -81,6 +85,7 @@ const Settings = () => {
       name: "language",
       value: profileData.language,
       inputType: "select",
+      options: languageOptions,
     },
     {
       title: "Account:",
@@ -97,9 +102,10 @@ const Settings = () => {
           title={ps.title}
           name={ps.name}
           value={ps.value}
+          inputType={ps.inputType}
+          options={ps.options}
           handleEditSubmit={handleEditSubmit}
           handleDeleteAction={handleDeleteAccount}
-          inputType={ps.inputType}
         />
       ))}
     </Wrapper>

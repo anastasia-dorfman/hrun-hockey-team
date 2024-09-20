@@ -222,8 +222,14 @@ export const getFullNameByShortcut = (
   return fullNameObject[key];
 };
 
+export const LANGUAGE_OPTIONS = {
+  ENGLISH: "English",
+  FRENCH: "French",
+};
+
 export const statsGeneralShortcuts = Object.values(STATS_SHORTCUTS_GENERAL);
 export const statsSkaterShortcuts = Object.values(STATS_SHORTCUTS_SKATER);
 export const positionShortcuts = Object.values(POSITION_SHORTCUTS);
 export const categories = Object.values(PRODUCT_CATEGORY);
 export const types = Object.values(PRODUCT_TYPE);
+export const languageOptions = Object.values(LANGUAGE_OPTIONS);

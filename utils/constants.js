@@ -59,4 +59,10 @@ export const WEEKDAYS = {
   SUNDAY: "Sunday",
 };
 
+export const LANGUAGE_OPTIONS = {
+  ENGLISH: "English",
+  FRENCH: "French",
+};
+
 export const WEEKDAYS_ARRAY = Object.values(WEEKDAYS);
+export const languageOptions = Object.values(LANGUAGE_OPTIONS);

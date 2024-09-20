@@ -11,6 +11,7 @@ import News from "../models/NewsModel.js";
 import User from "../models/UserModel.js";
 import { param } from "express-validator";
 import { isAdult, parseAndValidateDate, isChild } from "../utils/dateUtils.js";
+import { languageOptions } from "../utils/constants.js";
 
 // Constants
 const MIN_DESCRIPTION_LENGTH = 5;
@@ -422,6 +423,12 @@ export const validateUpdateUserInput = withValidationErrors([
 
       return true;
     }),
+
+  body("language")
+    .notEmpty()
+    .withMessage("Language is required")
+    .isIn(languageOptions)
+    .withMessage("Invalid language option"),
 
   body("password")
     .optional()

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Counter from "./counter.js";
 import { isAdult, isChild, parseAndValidateDate } from "../utils/dateUtils.js";
+import { languageOptions } from "../utils/constants.js";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -127,7 +128,7 @@ const UserSchema = new mongoose.Schema(
     },
     language: {
       type: String,
-      enum: ["English", "French"],
+      enum: languageOptions,
       default: "English",
     },
   },

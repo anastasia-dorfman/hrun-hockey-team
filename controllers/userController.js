@@ -88,6 +88,7 @@ export const updateUser = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ msg: "User updated successfully", user: updatedUser });
   } catch (error) {
+    console.error("Error updating user:", error);
     res
       .status(StatusCodes.BAD_REQUEST)
       .json({ msg: "Failed to update user", error: error.message });

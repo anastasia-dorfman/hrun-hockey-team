@@ -14,13 +14,14 @@ import showToast from "../CustomToast";
 
 const ProfileCard = ({
   title,
+  name,
   value,
+  inputType = "text",
+  options = [],
   isEmptyValue = false,
+  showCard = true,
   handleEditSubmit,
   handleDeleteAction,
-  inputType = "text",
-  name,
-  showCard = true,
 }) => {
   const [isEditing, setIsEditing] = useState(name === "kids" ? {} : false);
   const [isFormDataValid, setIsFormDataValid] = useState(false);
@@ -83,7 +84,9 @@ const ProfileCard = ({
         )) ||
       (name === "password" &&
         passwordRegex.test(newValue.password) &&
-        newValue.password === newValue.passwordConfirmation);
+        newValue.password === newValue.passwordConfirmation) ||
+      (name === "email" && emailRegex.test(newValue)) ||
+      (name === "language" && newValue !== "");
 
     setIsFormDataValid(isValid);
     return isValid;
@@ -202,11 +205,16 @@ const ProfileCard = ({
         />
       );
 
+    if (name === "language") {
+      console.log("languages:", options);
+    }
+
     return (
       <FormRow
         type={inputType}
         name={name}
         value={editedValue}
+        options={options.map((o) => ({ value: o, label: o }))}
         onChange={handleChange}
         isLabeled={false}
         //TODO minus day doesnt work, bug in valudating day
