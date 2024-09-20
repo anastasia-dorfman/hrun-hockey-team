@@ -163,7 +163,7 @@ const ProfileCard = ({
     childFirstName = null,
     childLastName = null
   ) => {
-    if ((childLastName = null)) {
+    if (childId === null) {
       showToast({
         title: `Are you sure you want to delete the account?`,
         onConfirm: () => handleDeleteAction(),

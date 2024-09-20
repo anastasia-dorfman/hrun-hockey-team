@@ -35,6 +35,7 @@ const Wrapper = styled.div`
     justify-content: space-around;
     align-items: start;
     gap: 1rem;
+    border-radius: var(--border-radius);
   }
 
   @media (max-width: 1600px) {
