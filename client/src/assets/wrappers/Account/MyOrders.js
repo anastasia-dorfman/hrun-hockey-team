@@ -10,19 +10,19 @@ const Wrapper = styled.div`
 
   th:nth-child(1),
   td:nth-child(1) {
-    width: 45%;
+    width: 41%;
   }
   th:nth-child(2),
   td:nth-child(2) {
-    width: 13%;
+    width: 8%;
   }
   th:nth-child(3),
   td:nth-child(3) {
-    width: 24%;
+    width: 27%;
   }
   th:nth-child(4),
   td:nth-child(4) {
-    width: 16%;
+    width: 24%;
   }
 
   table {
@@ -51,7 +51,7 @@ const Wrapper = styled.div`
       .title {
         display: flex;
         justify-content: space-between;
-        gap: 3rem;
+        gap: 1rem;
       }
 
       .status {
@@ -74,6 +74,20 @@ const Wrapper = styled.div`
           border-color: var(--warning);
           color: var(--warning);
         }
+      }
+    }
+  }
+
+  @media (max-width: 1200px) {
+    width: 99%;
+    .info-card {
+      padding: 1rem;
+    }
+
+    table {
+      th,
+      td {
+        padding: 1rem;
       }
     }
   }

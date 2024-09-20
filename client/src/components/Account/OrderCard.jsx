@@ -49,10 +49,10 @@ const OrderCard = ({ order }) => {
                     </div>
                   ))}
             </td>
-            <td>${order.totalAmount}</td>
-            <td>{getFormattedDate(order.createdAt, false)}</td>
+            <td className="b3">${order.totalAmount}</td>
+            <td className="b3">{getFormattedDate(order.createdAt, false)}</td>
             <td>
-              <div className={`status ${order.status.toLowerCase()}`}>
+              <div className={`b3 status ${order.status.toLowerCase()}`}>
                 {order.status}
               </div>
             </td>

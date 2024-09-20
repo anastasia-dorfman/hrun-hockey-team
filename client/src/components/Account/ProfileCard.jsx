@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import FormRow from "../FormRow";
 import AddressForm from "./AddressForm";
 import ChildForm from "./ChildForm";
+import NameForm from "./NameForm";
+import PasswordForm from "./PasswordForm";
 import {
   formatDate,
   isAdult,
   isChild,
   parseAndValidateDate,
 } from "../../utils/functions";
-import NameForm from "./NameForm";
 import showToast from "../CustomToast";
 
 const ProfileCard = ({
@@ -16,14 +17,16 @@ const ProfileCard = ({
   value,
   isEmptyValue = false,
   handleEditSubmit,
-  handleDeleteChild,
+  handleDeleteAction,
   inputType = "text",
   name,
   showCard = true,
 }) => {
   const [isEditing, setIsEditing] = useState(name === "kids" ? {} : false);
   const [isFormDataValid, setIsFormDataValid] = useState(false);
-  const [editedValue, setEditedValue] = useState(name === "kids" ? {} : value);
+  const [editedValue, setEditedValue] = useState(
+    name === "kids" || name === "password" ? {} : value
+  );
 
   useEffect(() => {
     if ((name === "address" && isAddressEmpty(value)) || name === "addChild") {
@@ -51,6 +54,7 @@ const ProfileCard = ({
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const phoneRegex =
       /^\+?(\d{1,3})?[-.\s]?(\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4})$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])/;
 
     const isValid =
       (name === "address" && isAddressValid(newValue)) ||
@@ -76,7 +80,10 @@ const ProfileCard = ({
             .replace(/-/g, "")
             .replace(/\(/g, "")
             .replace(/\)/g, "")
-        ));
+        )) ||
+      (name === "password" &&
+        passwordRegex.test(newValue.password) &&
+        newValue.password === newValue.passwordConfirmation);
 
     setIsFormDataValid(isValid);
     return isValid;
@@ -112,6 +119,7 @@ const ProfileCard = ({
       if (isEditing) {
         if (validateFormData(editedValue)) {
           handleEditSubmit(name, editedValue);
+
           if (name === "addChild") {
             setEditedValue({
               firstName: "",
@@ -147,12 +155,24 @@ const ProfileCard = ({
     }
   };
 
-  const handleDelete = (childId, childFirstName, childLastName) => {
-    showToast({
-      title: `Are you sure you want to delete profile of ${childFirstName} ${childLastName}?`,
-      onConfirm: () => handleDeleteChild(childId),
-      onConfirmBtnText: "Delete",
-    });
+  const handleDelete = (
+    childId = null,
+    childFirstName = null,
+    childLastName = null
+  ) => {
+    if ((childLastName = null)) {
+      showToast({
+        title: `Are you sure you want to delete the account?`,
+        onConfirm: () => handleDeleteAction(),
+        onConfirmBtnText: "Delete",
+      });
+    } else {
+      showToast({
+        title: `Are you sure you want to delete profile of ${childFirstName} ${childLastName}?`,
+        onConfirm: () => handleDeleteAction(childId),
+        onConfirmBtnText: "Delete",
+      });
+    }
   };
 
   const renderEditContent = (kid = null) => {
@@ -173,6 +193,14 @@ const ProfileCard = ({
 
     if (name === "fullName")
       return <NameForm fullName={editedValue} onChange={handleFormChange} />;
+
+    if (name === "password")
+      return (
+        <PasswordForm
+          passwordObject={editedValue}
+          onChange={handleFormChange}
+        />
+      );
 
     return (
       <FormRow
@@ -227,6 +255,10 @@ const ProfileCard = ({
       );
     }
 
+    if (name === "password") {
+      return <span className="b1 value">********</span>;
+    }
+
     // TODO Remove when back-end implemented
     if (typeof value === "object" && value !== null) {
       return <span className="b1 value">{JSON.stringify(value)}</span>;
@@ -260,10 +292,16 @@ const ProfileCard = ({
             <button
               type="button"
               className="text-button"
-              onClick={handleEdit}
+              onClick={name === "deleteAccount" ? handleDelete : handleEdit}
               disabled={isEditing && !isFormDataValid}
             >
-              <span className="b1 edit">{isEditing ? "Save" : "Edit"}</span>
+              <span className="b1 edit">
+                {isEditing
+                  ? "Save"
+                  : name === "deleteAccount"
+                  ? "Delete"
+                  : "Edit"}
+              </span>
             </button>
           </div>
         </form>

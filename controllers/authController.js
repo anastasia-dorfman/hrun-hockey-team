@@ -15,10 +15,30 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
 
-  const isValidUser =
-    user && (await comparePassword(req.body.password, user.password));
+  // const isValidUser =
+  //   user && (await comparePassword(req.body.password, user.password));
 
-  if (!isValidUser) throw new UnauthenticatedError("invalid credentials");
+  // if (!isValidUser) throw new UnauthenticatedError("invalid credentials");
+
+  if (!user) {
+    throw new UnauthenticatedError("Invalid credentials");
+  }
+
+  if (user.status === "Deleted") {
+    return res.status(StatusCodes.FORBIDDEN).json({
+      msg: "This account has been deleted. Please contact support to restore your account.",
+      isDeleted: true,
+    });
+  }
+
+  const isValidPassword = await comparePassword(
+    req.body.password,
+    user.password
+  );
+
+  if (!isValidPassword) {
+    throw new UnauthenticatedError("Invalid credentials");
+  }
 
   const token = createJWT({ userId: user.userId, role: user.role });
 
@@ -39,4 +59,24 @@ export const logout = (req, res) => {
     expires: new Date(Date.now()),
   });
   res.status(StatusCodes.OK).json({ msg: "user logged out!" });
+};
+
+export const restoreAccount = async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    throw new NotFoundError("No user found with this email address");
+  }
+
+  if (user.status !== "Deleted") {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      msg: "This account is not deleted and does not need restoration",
+    });
+  }
+
+  user.status = "Active";
+  await user.save();
+
+  res.status(StatusCodes.OK).json({
+    msg: "Account restored successfully. You can now log in.",
+  });
 };

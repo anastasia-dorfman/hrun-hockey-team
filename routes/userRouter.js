@@ -6,11 +6,12 @@ import {
   deleteUser,
 } from "../controllers/userController.js";
 import { validateUpdateUserInput } from "../middleware/validationMiddleware.js";
+import { authenticateUser } from "../middleware/authMiddleware.js";
 
 router
   .route("/")
   .get(getCurrentUser)
-  .patch(validateUpdateUserInput, updateUser)
+  .patch(authenticateUser, validateUpdateUserInput, updateUser)
   .delete(deleteUser);
 
 export default router;

@@ -45,7 +45,6 @@ export default function Footer() {
                   <Link to="/news">News</Link>
                   <Link to="/shop">Shop</Link>
                   <Link to="/stats">Stats</Link>
-                  <Link to="/blog">Blog</Link>
                   <Link to="/community">Community</Link>
                 </div>
               </section>

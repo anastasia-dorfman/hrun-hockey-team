@@ -190,7 +190,7 @@ const Profile = () => {
             ps.name === "address" ? !ps.value.streetAddress : !ps.value
           }
           handleEditSubmit={handleEditSubmit}
-          handleDeleteChild={handleDeleteChild}
+          handleDeleteAction={handleDeleteChild}
           inputType={ps.inputType}
           showCard={ps.showCard}
         />

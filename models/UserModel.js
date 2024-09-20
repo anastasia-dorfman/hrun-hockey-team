@@ -120,6 +120,16 @@ const UserSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
+    status: {
+      type: String,
+      enum: ["active", "deleted"],
+      default: "active",
+    },
+    language: {
+      type: String,
+      enum: ["English", "French"],
+      default: "English",
+    },
   },
   { timestamps: true }
 );

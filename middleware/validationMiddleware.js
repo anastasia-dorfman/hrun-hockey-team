@@ -240,27 +240,17 @@ export const validateRegisterInput = withValidationErrors([
 ]);
 
 // export const validateUpdateUserInput = withValidationErrors([
-//   body("firstName")
-//     .if(body("firstName").exists())
-//     .notEmpty()
-//     .withMessage("First name is required")
-//     .isLength({ min: 2, max: 50 })
-//     .withMessage("First name must be between 2 and 50 characters"),
+//   body("firstName").notEmpty().withMessage("First name is required"),
 
-//   body("lastName")
-//     .if(body("lastName").exists())
-//     .notEmpty()
-//     .withMessage("Last name is required")
-//     .isLength({ min: 2, max: 50 })
-//     .withMessage("Last name must be between 2 and 50 characters"),
+//   body("lastName").notEmpty().withMessage("Last name is required"),
 
 //   body("dob")
 //     .optional()
 //     .custom((dob) => {
-//       if (!dob) return true;
+//       if (!dob || !dob === "") return true;
 //       const date = parseAndValidateDate(dob);
 //       if (!isAdult(date)) {
-//         throw new Error("You must be at least 18 years old");
+//         throw new Error("You must be at least 18 years old\n");
 //       }
 //       return true;
 //     }),
@@ -271,59 +261,69 @@ export const validateRegisterInput = withValidationErrors([
 //     .withMessage("Phone number must be valid and in the format (123) 456-7890"),
 
 //   body("email")
-//     .if(body("email").exists())
 //     .notEmpty()
 //     .withMessage("Email is required")
 //     .isEmail()
 //     .withMessage("Invalid email format")
 //     .custom(async (email, { req }) => {
 //       const user = await User.findOne({ email });
-//       if (user && user.userId.toString() !== req.user.userId) {
-//         throw new Error("Email already exists");
+//       if (user && user.userId.toString() !== req.user.userId.toString()) {
+//         throw new Error("email already exists");
 //       }
-//       return true;
 //     }),
 
 //   body("address")
 //     .optional()
 //     .custom((address) => {
-//       if (!address) return true;
+//       if (
+//         !address ||
+//         (!address.streetAddress &&
+//           !address.city &&
+//           !address.province &&
+//           !address.postalCode)
+//       ) {
+//         return true;
+//       }
+
 //       if (address.streetAddress && address.streetAddress.length < 5) {
 //         throw new Error("Street address must be at least 5 characters long");
 //       }
 //       if (address.city && address.city.length < 3) {
 //         throw new Error("City must be at least 3 characters long");
 //       }
+//       if (address.province === undefined || address.province === "") {
+//         throw new Error("Province is required");
+//       }
 //       if (address.postalCode) {
 //         const postalCodeRegex =
 //           /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i;
-//         if (!postalCodeRegex.test(address.postalCode))
+//         if (!postalCodeRegex.test(address.postalCode)) {
 //           throw new Error("Postal code is not valid");
+//         }
+//       } else {
+//         throw new Error("Postal code is required");
 //       }
+
 //       return true;
 //     }),
 
 //   body("kids")
 //     .optional()
-//     .isArray()
-//     .withMessage("Kids must be an array")
 //     .custom((kids) => {
-//       if (!kids) return true;
-//       kids.forEach((kid, index) => {
-//         if (!kid.firstName || kid.firstName.length < 2) {
+//       if (!kids || !Array.isArray(kids)) return true;
+//       kids.forEach((kid) => {
+//         if (
+//           !kid.firstName ||
+//           kid.firstName.length < 3 ||
+//           !kid.lastName ||
+//           kid.lastName.length < 3
+//         ) {
 //           throw new Error(
-//             `Child #${
-//               index + 1
-//             }'s first name must be at least 2 characters long`
-//           );
-//         }
-//         if (!kid.lastName || kid.lastName.length < 2) {
-//           throw new Error(
-//             `Child #${index + 1}'s last name must be at least 2 characters long`
+//             "Child's first and last name must be at least 2 characters long"
 //           );
 //         }
 //         if (!kid.dob || !isChild(parseAndValidateDate(kid.dob))) {
-//           throw new Error(`Child #${index + 1}'s date of birth is invalid`);
+//           throw new Error("Child's date of birth is invalid");
 //         }
 //       });
 //       return true;
@@ -331,14 +331,14 @@ export const validateRegisterInput = withValidationErrors([
 // ]);
 
 export const validateUpdateUserInput = withValidationErrors([
-  body("firstName").notEmpty().withMessage("First name is required"),
+  body("firstName").optional().notEmpty().withMessage("First name is required"),
 
-  body("lastName").notEmpty().withMessage("Last name is required"),
+  body("lastName").optional().notEmpty().withMessage("Last name is required"),
 
   body("dob")
     .optional()
     .custom((dob) => {
-      if (!dob || !dob === "") return true;
+      if (!dob || dob === "") return true;
       const date = parseAndValidateDate(dob);
       if (!isAdult(date)) {
         throw new Error("You must be at least 18 years old\n");
@@ -352,47 +352,42 @@ export const validateUpdateUserInput = withValidationErrors([
     .withMessage("Phone number must be valid and in the format (123) 456-7890"),
 
   body("email")
-    .notEmpty()
-    .withMessage("Email is required")
+    .optional()
     .isEmail()
     .withMessage("Invalid email format")
     .custom(async (email, { req }) => {
       const user = await User.findOne({ email });
       if (user && user.userId.toString() !== req.user.userId.toString()) {
-        throw new Error("email already exists");
+        throw new Error("Email already exists");
       }
     }),
 
   body("address")
     .optional()
     .custom((address) => {
-      if (
-        !address ||
-        (!address.streetAddress &&
-          !address.city &&
-          !address.province &&
-          !address.postalCode)
-      ) {
-        return true;
-      }
+      if (!address) return true;
+
+      const errors = [];
 
       if (address.streetAddress && address.streetAddress.length < 5) {
-        throw new Error("Street address must be at least 5 characters long");
+        errors.push("Street address must be at least 5 characters long");
       }
       if (address.city && address.city.length < 3) {
-        throw new Error("City must be at least 3 characters long");
+        errors.push("City must be at least 3 characters long");
       }
-      if (address.province === undefined || address.province === "") {
-        throw new Error("Province is required");
+      if (address.province === "") {
+        errors.push("Province is required");
       }
       if (address.postalCode) {
         const postalCodeRegex =
           /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i;
         if (!postalCodeRegex.test(address.postalCode)) {
-          throw new Error("Postal code is not valid");
+          errors.push("Postal code is not valid");
         }
-      } else {
-        throw new Error("Postal code is required");
+      }
+
+      if (errors.length > 0) {
+        throw new Error(errors.join("\n"));
       }
 
       return true;
@@ -402,21 +397,56 @@ export const validateUpdateUserInput = withValidationErrors([
     .optional()
     .custom((kids) => {
       if (!kids || !Array.isArray(kids)) return true;
-      kids.forEach((kid) => {
-        if (
-          !kid.firstName ||
-          kid.firstName.length < 3 ||
-          !kid.lastName ||
-          kid.lastName.length < 3
-        ) {
-          throw new Error(
-            "Child's first and last name must be at least 2 characters long"
+
+      const errors = [];
+
+      kids.forEach((kid, index) => {
+        if (kid.firstName && kid.firstName.length < 2) {
+          errors.push(
+            `Child ${index + 1}'s first name must be at least 2 characters long`
           );
         }
-        if (!kid.dob || !isChild(parseAndValidateDate(kid.dob))) {
-          throw new Error("Child's date of birth is invalid");
+        if (kid.lastName && kid.lastName.length < 2) {
+          errors.push(
+            `Child ${index + 1}'s last name must be at least 2 characters long`
+          );
+        }
+        if (kid.dob && !isChild(parseAndValidateDate(kid.dob))) {
+          errors.push(`Child ${index + 1}'s date of birth is invalid`);
         }
       });
+
+      if (errors.length > 0) {
+        throw new Error(errors.join("\n"));
+      }
+
+      return true;
+    }),
+
+  body("password")
+    .optional()
+    .isObject()
+    .withMessage("Password must be an object")
+    .custom((passwordObj) => {
+      const { currentPassword, password, passwordConfirmation } = passwordObj;
+
+      if (!currentPassword || !password || !passwordConfirmation) {
+        throw new Error(
+          "Current password, new password, and password confirmation are required"
+        );
+      }
+
+      if (password !== passwordConfirmation) {
+        throw new Error("Passwords do not match\n");
+      }
+
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])/;
+      if (!passwordRegex.test(password)) {
+        throw new Error(
+          "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+        );
+      }
+
       return true;
     }),
 ]);
@@ -428,6 +458,30 @@ export const validateLoginInput = withValidationErrors([
     .isEmail()
     .withMessage("Invalid email format"),
   body("password").notEmpty().withMessage("Password is required"),
+]);
+
+export const validateRestoreAccountInput = withValidationErrors([
+  body("email")
+    .notEmpty()
+    .withMessage("Email is required\n")
+    .isEmail()
+    .withMessage("Invalid email format\n")
+    .custom(async (email) => {
+      const user = await User.findOne({ email });
+      if (!user) {
+        throw new BadRequestError("No account found with this email address\n");
+      }
+      if (user.status === "Active") {
+        throw new BadRequestError(
+          "This account is already active and doesn't need restoration\n"
+        );
+      }
+      if (user.status !== "Deleted") {
+        throw new BadRequestError(
+          "This account cannot be restored. Please contact support for assistance\n"
+        );
+      }
+    }),
 ]);
 
 export const validateIdParam = (paramName, modelName, Model) =>

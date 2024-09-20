@@ -9,6 +9,7 @@ const Wrapper = styled.nav`
   .welcome-message-container {
     flex: 1 1 70%;
     min-width: fit-content;
+    max-width: 800px;
     padding: 2rem;
     padding-right: 0;
     border-radius: 1.3rem;
