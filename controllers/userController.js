@@ -70,12 +70,17 @@ export const updateUser = async (req, res) => {
 
       user.password = await hashPassword(password);
       delete updateData.password;
-    }
+    } else {
+      console.log("updateData before loop", updateData);
+      console.log("Object.entries(updateData)", Object.entries(updateData));
 
-    // Update other fields
-    for (const [key, value] of Object.entries(updateData)) {
-      if (key !== "role" && key !== "userId") {
-        user[key] = value;
+      for (const [key, value] of Object.entries(updateData)) {
+        console.log("updateData", updateData);
+        console.log("key", key);
+        console.log("value", value);
+        if (key !== "role" && key !== "userId") {
+          user[key] = value;
+        }
       }
     }
 
@@ -95,10 +100,10 @@ export const updateUser = async (req, res) => {
   }
 };
 
-export const deleteUser = async (req, res) => {
-  const removedUser = await User.findOneAndDelete({ userId: req.user.userId });
-  if (!removedUser) {
-    return res.status(StatusCodes.NOT_FOUND).json({ msg: "User not found" });
-  }
-  res.status(StatusCodes.OK).json({ msg: "User deleted successfully" });
-};
+// export const deleteUser = async (req, res) => {
+//   const removedUser = await User.findOneAndDelete({ userId: req.user.userId });
+//   if (!removedUser) {
+//     return res.status(StatusCodes.NOT_FOUND).json({ msg: "User not found" });
+//   }
+//   res.status(StatusCodes.OK).json({ msg: "User deleted successfully" });
+// };

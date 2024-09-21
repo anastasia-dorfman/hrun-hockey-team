@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useAccountContext } from "./AccountLayout";
+import React, { useState } from "react";
 import { useUser } from "../../context/UserContext";
 import ProfileCard from "../../components/Account/ProfileCard";
 import Wrapper from "../../assets/wrappers/Account/Settings";
-import { formatDate } from "../../utils/functions";
 import customFetch from "../../utils/customFetch";
-import { languageOptions } from "../../utils/clientConstants";
+import { languageOptions, USER_STATUSES } from "../../utils/clientConstants";
 import { toast } from "react-hot-toast";
 
 const Settings = () => {
@@ -22,7 +20,6 @@ const Settings = () => {
       passwordConfirmation: "",
     },
     language: user.language,
-    status: user.status,
   });
 
   const handleEditSubmit = async (name, value) => {
@@ -59,10 +56,10 @@ const Settings = () => {
   const handleDeleteAccount = async () => {
     try {
       const response = await customFetch.patch("/user", {
-        status: "Deleted",
+        status: USER_STATUSES.DELETED,
       });
 
-      if (response.data.user.status === "Deleted") {
+      if (response.data.user.status === USER_STATUSES.DELETED) {
         toast.success("Your account has been marked as deleted.");
         logoutUser();
       } else {

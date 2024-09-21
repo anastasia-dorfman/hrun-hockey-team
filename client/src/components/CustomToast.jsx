@@ -17,7 +17,6 @@ const CustomToast = ({
   linkText,
   onLinkClick,
   onConfirm,
-  onCancel,
   onConfirmBtnText,
 }) => {
   const { theme } = useTheme();
@@ -35,9 +34,9 @@ const CustomToast = ({
       {onConfirm && (
         <div className="confirmation-buttons">
           <button onClick={onConfirm} className="button selected">
-            {onConfirmBtnText ? onConfirmBtnText : "Confirm"}
+            {onConfirmBtnText || "Confirm"}
           </button>
-          <button onClick={onCancel} className="button">
+          <button onClick={() => toast.dismiss()} className="button">
             Cancel
           </button>
         </div>
@@ -54,7 +53,6 @@ const showToast = ({
   linkText,
   link,
   onConfirm,
-  onCancel,
   onConfirmBtnText,
 }) => {
   const icons = {
@@ -86,19 +84,11 @@ const showToast = ({
               }
             : null
         }
-        onCancel={
-          onConfirm
-            ? () => {
-                onCancel();
-                toast.dismiss(t.id);
-              }
-            : null
-        }
         onConfirmBtnText={onConfirmBtnText}
       />
     ),
     {
-      duration: link ? Infinity : duration,
+      duration: link || onConfirm ? Infinity : duration,
       // duration: onConfirm && onCancel ? Infinity : duration,
       position: "top-center",
     }

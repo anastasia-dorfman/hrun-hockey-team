@@ -3,6 +3,7 @@ import User from "../models/UserModel.js";
 import { hashPassword, comparePassword } from "../utils/passwordUtils.js";
 import { UnauthenticatedError } from "../errors/customErrors.js";
 import { createJWT } from "../utils/tokenUtils.js";
+import { USER_STATUSES } from "../utils/constants.js";
 
 export const register = async (req, res) => {
   const hashedPassword = await hashPassword(req.body.password);
@@ -24,7 +25,7 @@ export const login = async (req, res) => {
     throw new UnauthenticatedError("Invalid credentials");
   }
 
-  if (user.status === "Deleted") {
+  if (user.status === USER_STATUSES.DELETED) {
     return res.status(StatusCodes.FORBIDDEN).json({
       msg: "This account has been deleted. Please contact support to restore your account.",
       isDeleted: true,
@@ -67,7 +68,7 @@ export const restoreAccount = async (req, res) => {
     throw new NotFoundError("No user found with this email address");
   }
 
-  if (user.status !== "Deleted") {
+  if (user.status !== USER_STATUSES.DELETED) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       msg: "This account is not deleted and does not need restoration",
     });

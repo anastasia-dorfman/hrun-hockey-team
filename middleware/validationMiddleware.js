@@ -1,17 +1,23 @@
-import { body, validationResult } from "express-validator";
+import { body, validationResult, param } from "express-validator";
 import { BadRequestError, NotFoundError } from "../errors/customErrors.js";
 import {
   PRODUCT_CATEGORY,
   PRODUCT_TYPE,
   PRODUCT_COLORS,
   PRODUCT_SIZES,
+  VALIDATION_PATTERNS,
+  SCHEMA_CONSTRAINTS,
+  ERROR_MESSAGES,
+  languageOptions,
+  allowedUpdateFields,
+  ALLOWED_UPDATE_FIELDS,
+  userStatusOptions,
+  USER_STATUSES,
 } from "../utils/constants.js";
+import { isAdult, parseAndValidateDate, isChild } from "../utils/dateUtils.js";
 import Product from "../models/ProductModel.js";
 import News from "../models/NewsModel.js";
 import User from "../models/UserModel.js";
-import { param } from "express-validator";
-import { isAdult, parseAndValidateDate, isChild } from "../utils/dateUtils.js";
-import { languageOptions } from "../utils/constants.js";
 
 // Constants
 const MIN_DESCRIPTION_LENGTH = 5;
@@ -187,8 +193,23 @@ export const validateNewsInput = withValidationErrors([
 ]);
 
 export const validateRegisterInput = withValidationErrors([
-  body("firstName").notEmpty().withMessage("First name is required\n"),
-  body("lastName").notEmpty().withMessage("Last name is required\n"),
+  body("firstName")
+    .optional()
+    .notEmpty()
+    .withMessage(ERROR_MESSAGES.FIRST_NAME_REQUIRED)
+    .isLength({ min: SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH })
+    .withMessage(ERROR_MESSAGES.NAME_TOO_SHORT("First name"))
+    .isLength({ max: SCHEMA_CONSTRAINTS.NAME.MAX_LENGTH })
+    .withMessage(ERROR_MESSAGES.NAME_TOO_LONG("First name")),
+
+  body("lastName")
+    .optional()
+    .notEmpty()
+    .withMessage(ERROR_MESSAGES.LAST_NAME_REQUIRED)
+    .isLength({ min: SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH })
+    .withMessage(ERROR_MESSAGES.NAME_TOO_SHORT("Last name"))
+    .isLength({ max: SCHEMA_CONSTRAINTS.NAME.MAX_LENGTH })
+    .withMessage(ERROR_MESSAGES.NAME_TOO_LONG("Last name")),
   body("dob")
     // .notEmpty()
     .optional()
@@ -240,15 +261,187 @@ export const validateRegisterInput = withValidationErrors([
     }),
 ]);
 
-// export const validateUpdateUserInput = withValidationErrors([
-//   body("firstName").notEmpty().withMessage("First name is required"),
+export const validateUpdateUserInput = withValidationErrors([
+  body().custom((body) => {
+    const bodyKeys = Object.keys(body);
+    const isValid = bodyKeys.every((key) => allowedUpdateFields.includes(key));
+    if (!isValid) {
+      throw new Error(ERROR_MESSAGES.INVALID_UPDATE_FIELDS);
+    }
+    return true;
+  }),
 
-//   body("lastName").notEmpty().withMessage("Last name is required"),
+  body(ALLOWED_UPDATE_FIELDS.FIRST_NAME)
+    .optional()
+    .notEmpty()
+    .withMessage(ERROR_MESSAGES.FIRST_NAME_REQUIRED)
+    .isLength({
+      min: SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH,
+      max: SCHEMA_CONSTRAINTS.NAME.MAX_LENGTH,
+    })
+    .withMessage((value, { path }) =>
+      value.length < SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH
+        ? ERROR_MESSAGES.NAME_TOO_SHORT(path)
+        : ERROR_MESSAGES.NAME_TOO_LONG(path)
+    ),
+
+  body(ALLOWED_UPDATE_FIELDS.LAST_NAME)
+    .optional()
+    .notEmpty()
+    .withMessage(ERROR_MESSAGES.LAST_NAME_REQUIRED)
+    .isLength({
+      min: SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH,
+      max: SCHEMA_CONSTRAINTS.NAME.MAX_LENGTH,
+    })
+    .withMessage((value, { path }) =>
+      value.length < SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH
+        ? ERROR_MESSAGES.NAME_TOO_SHORT(path)
+        : ERROR_MESSAGES.NAME_TOO_LONG(path)
+    ),
+
+  body(ALLOWED_UPDATE_FIELDS.DOB)
+    .optional()
+    .custom((dob) => {
+      if (!dob || dob === "") return true;
+      const date = parseAndValidateDate(dob);
+      if (!isAdult(date)) {
+        throw new Error(ERROR_MESSAGES.ADULT_AGE_REQUIRED);
+      }
+      return true;
+    }),
+
+  body(ALLOWED_UPDATE_FIELDS.PHONE)
+    .optional()
+    .matches(VALIDATION_PATTERNS.PHONE)
+    .withMessage(ERROR_MESSAGES.INVALID_PHONE_FORMAT),
+
+  body(ALLOWED_UPDATE_FIELDS.EMAIL)
+    .optional()
+    .isEmail()
+    .withMessage(ERROR_MESSAGES.INVALID_EMAIL_FORMAT)
+    .custom(async (email, { req }) => {
+      const user = await User.findOne({ email });
+      if (user && user.userId.toString() !== req.user.userId.toString()) {
+        throw new Error(ERROR_MESSAGES.EMAIL_EXISTS);
+      }
+    }),
+
+  body(ALLOWED_UPDATE_FIELDS.ADDRESS)
+    .optional()
+    .custom((address) => {
+      if (!address) return true;
+
+      const errors = [];
+
+      if (
+        address.streetAddress &&
+        address.streetAddress.length <
+          SCHEMA_CONSTRAINTS.STREET_ADDRESS.MIN_LENGTH
+      ) {
+        errors.push(ERROR_MESSAGES.STREET_ADDRESS_TOO_SHORT);
+      }
+      if (
+        address.city &&
+        address.city.length < SCHEMA_CONSTRAINTS.CITY.MIN_LENGTH
+      ) {
+        errors.push(ERROR_MESSAGES.CITY_TOO_SHORT);
+      }
+      if (address.province === "") {
+        errors.push(ERROR_MESSAGES.PROVINCE_REQUIRED);
+      }
+      if (address.postalCode) {
+        const postalCodeRegex = VALIDATION_PATTERNS.POSTAL_CODE;
+        if (!postalCodeRegex.test(address.postalCode)) {
+          errors.push(ERROR_MESSAGES.INVALID_POSTAL_CODE);
+        }
+      }
+
+      if (errors.length > 0) {
+        throw new Error(errors.join("\n"));
+      }
+
+      return true;
+    }),
+
+  body(ALLOWED_UPDATE_FIELDS.KIDS)
+    .optional()
+    .custom((kids) => {
+      if (!kids || !Array.isArray(kids)) return true;
+
+      const errors = [];
+
+      kids.forEach((kid, index) => {
+        if (
+          kid.firstName &&
+          kid.firstName.length < SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH
+        ) {
+          errors.push(
+            ERROR_MESSAGES.CHILD_NAME_TOO_SHORT(index + 1, "first name")
+          );
+        }
+        if (
+          kid.lastName &&
+          kid.lastName.length < SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH
+        ) {
+          errors.push(
+            ERROR_MESSAGES.CHILD_NAME_TOO_SHORT(index + 1, "last name")
+          );
+        }
+        if (kid.dob && !isChild(parseAndValidateDate(kid.dob))) {
+          errors.push(ERROR_MESSAGES.INVALID_CHILD_DOB(index + 1));
+        }
+      });
+
+      if (errors.length > 0) {
+        throw new Error(errors.join("\n"));
+      }
+
+      return true;
+    }),
+
+  body(ALLOWED_UPDATE_FIELDS.LANGUAGE)
+    .optional()
+    .isIn(languageOptions)
+    .withMessage(ERROR_MESSAGES.INVALID_LANGUAGE),
+
+  body(ALLOWED_UPDATE_FIELDS.PASSWORD)
+    .optional()
+    .isObject()
+    .withMessage(ERROR_MESSAGES.PASSWORD_OBJECT_REQUIRED)
+    .custom((passwordObj) => {
+      const { currentPassword, password, passwordConfirmation } = passwordObj;
+
+      if (!currentPassword || !password || !passwordConfirmation) {
+        throw new Error(ERROR_MESSAGES.PASSWORD_FIELDS_REQUIRED);
+      }
+
+      if (password !== passwordConfirmation) {
+        throw new Error(ERROR_MESSAGES.PASSWORDS_DO_NOT_MATCH);
+      }
+
+      const passwordRegex = VALIDATION_PATTERNS.PASSWORD;
+      if (!passwordRegex.test(password)) {
+        throw new Error(ERROR_MESSAGES.INVALID_PASSWORD_FORMAT);
+      }
+
+      return true;
+    }),
+
+  body(ALLOWED_UPDATE_FIELDS.STATUS)
+    .optional()
+    .isIn(userStatusOptions)
+    .withMessage(ERROR_MESSAGES.INVALID_STATUS),
+]);
+
+// export const validateUpdateUserInput = withValidationErrors([
+//   body("firstName").optional().notEmpty().withMessage("First name is required"),
+
+//   body("lastName").optional().notEmpty().withMessage("Last name is required"),
 
 //   body("dob")
 //     .optional()
 //     .custom((dob) => {
-//       if (!dob || !dob === "") return true;
+//       if (!dob || dob === "") return true;
 //       const date = parseAndValidateDate(dob);
 //       if (!isAdult(date)) {
 //         throw new Error("You must be at least 18 years old\n");
@@ -262,47 +455,42 @@ export const validateRegisterInput = withValidationErrors([
 //     .withMessage("Phone number must be valid and in the format (123) 456-7890"),
 
 //   body("email")
-//     .notEmpty()
-//     .withMessage("Email is required")
+//     .optional()
 //     .isEmail()
 //     .withMessage("Invalid email format")
 //     .custom(async (email, { req }) => {
 //       const user = await User.findOne({ email });
 //       if (user && user.userId.toString() !== req.user.userId.toString()) {
-//         throw new Error("email already exists");
+//         throw new Error("Email already exists");
 //       }
 //     }),
 
 //   body("address")
 //     .optional()
 //     .custom((address) => {
-//       if (
-//         !address ||
-//         (!address.streetAddress &&
-//           !address.city &&
-//           !address.province &&
-//           !address.postalCode)
-//       ) {
-//         return true;
-//       }
+//       if (!address) return true;
+
+//       const errors = [];
 
 //       if (address.streetAddress && address.streetAddress.length < 5) {
-//         throw new Error("Street address must be at least 5 characters long");
+//         errors.push("Street address must be at least 5 characters long");
 //       }
 //       if (address.city && address.city.length < 3) {
-//         throw new Error("City must be at least 3 characters long");
+//         errors.push("City must be at least 3 characters long");
 //       }
-//       if (address.province === undefined || address.province === "") {
-//         throw new Error("Province is required");
+//       if (address.province === "") {
+//         errors.push("Province is required");
 //       }
 //       if (address.postalCode) {
 //         const postalCodeRegex =
 //           /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i;
 //         if (!postalCodeRegex.test(address.postalCode)) {
-//           throw new Error("Postal code is not valid");
+//           errors.push("Postal code is not valid");
 //         }
-//       } else {
-//         throw new Error("Postal code is required");
+//       }
+
+//       if (errors.length > 0) {
+//         throw new Error(errors.join("\n"));
 //       }
 
 //       return true;
@@ -312,151 +500,66 @@ export const validateRegisterInput = withValidationErrors([
 //     .optional()
 //     .custom((kids) => {
 //       if (!kids || !Array.isArray(kids)) return true;
-//       kids.forEach((kid) => {
-//         if (
-//           !kid.firstName ||
-//           kid.firstName.length < 3 ||
-//           !kid.lastName ||
-//           kid.lastName.length < 3
-//         ) {
-//           throw new Error(
-//             "Child's first and last name must be at least 2 characters long"
+
+//       const errors = [];
+
+//       kids.forEach((kid, index) => {
+//         if (kid.firstName && kid.firstName.length < 2) {
+//           errors.push(
+//             `Child ${index + 1}'s first name must be at least 2 characters long`
 //           );
 //         }
-//         if (!kid.dob || !isChild(parseAndValidateDate(kid.dob))) {
-//           throw new Error("Child's date of birth is invalid");
+//         if (kid.lastName && kid.lastName.length < 2) {
+//           errors.push(
+//             `Child ${index + 1}'s last name must be at least 2 characters long`
+//           );
+//         }
+//         if (kid.dob && !isChild(parseAndValidateDate(kid.dob))) {
+//           errors.push(`Child ${index + 1}'s date of birth is invalid`);
 //         }
 //       });
+
+//       if (errors.length > 0) {
+//         throw new Error(errors.join("\n"));
+//       }
+
+//       return true;
+//     }),
+
+//   body("language")
+//     // .notEmpty()
+//     // .withMessage("Language is required")
+//     .optional()
+//     .isIn(languageOptions)
+//     .withMessage("Invalid language option"),
+
+//   body("password")
+//     .optional()
+//     .isObject()
+//     .withMessage("Password must be an object")
+//     .custom((passwordObj) => {
+//       const { currentPassword, password, passwordConfirmation } = passwordObj;
+
+//       if (!currentPassword || !password || !passwordConfirmation) {
+//         throw new Error(
+//           "Current password, new password, and password confirmation are required"
+//         );
+//       }
+
+//       if (password !== passwordConfirmation) {
+//         throw new Error("Passwords do not match\n");
+//       }
+
+//       const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])/;
+//       if (!passwordRegex.test(password)) {
+//         throw new Error(
+//           "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+//         );
+//       }
+
 //       return true;
 //     }),
 // ]);
-
-export const validateUpdateUserInput = withValidationErrors([
-  body("firstName").optional().notEmpty().withMessage("First name is required"),
-
-  body("lastName").optional().notEmpty().withMessage("Last name is required"),
-
-  body("dob")
-    .optional()
-    .custom((dob) => {
-      if (!dob || dob === "") return true;
-      const date = parseAndValidateDate(dob);
-      if (!isAdult(date)) {
-        throw new Error("You must be at least 18 years old\n");
-      }
-      return true;
-    }),
-
-  body("phone")
-    .optional()
-    .matches(/^\+?(\d{1,3})?[-.\s]?(\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4})$/)
-    .withMessage("Phone number must be valid and in the format (123) 456-7890"),
-
-  body("email")
-    .optional()
-    .isEmail()
-    .withMessage("Invalid email format")
-    .custom(async (email, { req }) => {
-      const user = await User.findOne({ email });
-      if (user && user.userId.toString() !== req.user.userId.toString()) {
-        throw new Error("Email already exists");
-      }
-    }),
-
-  body("address")
-    .optional()
-    .custom((address) => {
-      if (!address) return true;
-
-      const errors = [];
-
-      if (address.streetAddress && address.streetAddress.length < 5) {
-        errors.push("Street address must be at least 5 characters long");
-      }
-      if (address.city && address.city.length < 3) {
-        errors.push("City must be at least 3 characters long");
-      }
-      if (address.province === "") {
-        errors.push("Province is required");
-      }
-      if (address.postalCode) {
-        const postalCodeRegex =
-          /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i;
-        if (!postalCodeRegex.test(address.postalCode)) {
-          errors.push("Postal code is not valid");
-        }
-      }
-
-      if (errors.length > 0) {
-        throw new Error(errors.join("\n"));
-      }
-
-      return true;
-    }),
-
-  body("kids")
-    .optional()
-    .custom((kids) => {
-      if (!kids || !Array.isArray(kids)) return true;
-
-      const errors = [];
-
-      kids.forEach((kid, index) => {
-        if (kid.firstName && kid.firstName.length < 2) {
-          errors.push(
-            `Child ${index + 1}'s first name must be at least 2 characters long`
-          );
-        }
-        if (kid.lastName && kid.lastName.length < 2) {
-          errors.push(
-            `Child ${index + 1}'s last name must be at least 2 characters long`
-          );
-        }
-        if (kid.dob && !isChild(parseAndValidateDate(kid.dob))) {
-          errors.push(`Child ${index + 1}'s date of birth is invalid`);
-        }
-      });
-
-      if (errors.length > 0) {
-        throw new Error(errors.join("\n"));
-      }
-
-      return true;
-    }),
-
-  body("language")
-    .notEmpty()
-    .withMessage("Language is required")
-    .isIn(languageOptions)
-    .withMessage("Invalid language option"),
-
-  body("password")
-    .optional()
-    .isObject()
-    .withMessage("Password must be an object")
-    .custom((passwordObj) => {
-      const { currentPassword, password, passwordConfirmation } = passwordObj;
-
-      if (!currentPassword || !password || !passwordConfirmation) {
-        throw new Error(
-          "Current password, new password, and password confirmation are required"
-        );
-      }
-
-      if (password !== passwordConfirmation) {
-        throw new Error("Passwords do not match\n");
-      }
-
-      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])/;
-      if (!passwordRegex.test(password)) {
-        throw new Error(
-          "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-        );
-      }
-
-      return true;
-    }),
-]);
 
 export const validateLoginInput = withValidationErrors([
   body("email")
@@ -483,7 +586,7 @@ export const validateRestoreAccountInput = withValidationErrors([
           "This account is already active and doesn't need restoration\n"
         );
       }
-      if (user.status !== "Deleted") {
+      if (user.status !== USER_STATUSES.DELETED) {
         throw new BadRequestError(
           "This account cannot be restored. Please contact support for assistance\n"
         );

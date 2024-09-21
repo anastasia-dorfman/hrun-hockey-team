@@ -158,18 +158,14 @@ const ProfileCard = ({
     }
   };
 
-  const handleDelete = (
-    childId = null,
-    childFirstName = null,
-    childLastName = null
-  ) => {
-    if (childId === null) {
+  const handleDelete = (childId, childFirstName, childLastName) => {
+    if (name === "deleteAccount") {
       showToast({
         title: `Are you sure you want to delete the account?`,
         onConfirm: () => handleDeleteAction(),
         onConfirmBtnText: "Delete",
       });
-    } else {
+    } else if (childId) {
       showToast({
         title: `Are you sure you want to delete profile of ${childFirstName} ${childLastName}?`,
         onConfirm: () => handleDeleteAction(childId),

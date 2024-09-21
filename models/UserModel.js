@@ -1,7 +1,17 @@
 import mongoose from "mongoose";
 import Counter from "./counter.js";
 import { isAdult, isChild, parseAndValidateDate } from "../utils/dateUtils.js";
-import { languageOptions } from "../utils/constants.js";
+import {
+  ERROR_MESSAGES,
+  LANGUAGE_OPTIONS,
+  languageOptions,
+  SCHEMA_CONSTRAINTS,
+  USER_ROLES,
+  USER_STATUSES,
+  userRoleOptions,
+  userStatusOptions,
+  VALIDATION_PATTERNS,
+} from "../utils/constants.js";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -14,16 +24,16 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      minlength: 2,
-      maxlength: 50,
+      minlength: SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH,
+      maxlength: SCHEMA_CONSTRAINTS.NAME.MAX_LENGTH,
     },
     lastName: {
       type: String,
       required: true,
       trim: true,
       index: true,
-      minlength: 2,
-      maxlength: 50,
+      minlength: SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH,
+      maxlength: SCHEMA_CONSTRAINTS.NAME.MAX_LENGTH,
     },
     dob: {
       type: Date,
@@ -37,18 +47,16 @@ const UserSchema = new mongoose.Schema(
           if (value) return isAdult(value);
           return true;
         },
-        message: "User must be at least 18 years old.",
+        message: ERROR_MESSAGES.ADULT_AGE_REQUIRED,
       },
     },
     phone: {
       type: String,
       validate: {
         validator: function (v) {
-          return /^\+?(\d{1,3})?[-.\s]?(\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4})$/.test(
-            v
-          );
+          return VALIDATION_PATTERNS.PHONE.test(v);
         },
-        message: (props) => `${props.value} is not a valid phone number!`,
+        message: (props) => ERROR_MESSAGES.INVALID_PHONE_FORMAT,
       },
     },
     email: {
@@ -61,7 +69,7 @@ const UserSchema = new mongoose.Schema(
         validator: function (v) {
           return /^\S+@\S+\.\S+$/.test(v);
         },
-        message: (props) => `${props.value} is not a valid email!`,
+        message: (props) => ERROR_MESSAGES.INVALID_EMAIL_FORMAT,
       },
     },
     password: {
@@ -75,14 +83,9 @@ const UserSchema = new mongoose.Schema(
         type: String,
         validate: {
           validator: function (v) {
-            return (
-              v === "" ||
-              /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i.test(
-                v
-              )
-            );
+            return v === "" || VALIDATION_PATTERNS.POSTAL_CODE.test(v);
           },
-          message: (props) => `${props.value} is not a valid postal code!`,
+          message: (props) => ERROR_MESSAGES.INVALID_POSTAL_CODE,
         },
       },
       street: String,
@@ -110,7 +113,7 @@ const UserSchema = new mongoose.Schema(
           set: parseAndValidateDate,
           validate: {
             validator: isChild,
-            message: "Kids must be less than 18 years old.",
+            message: ERROR_MESSAGES.CHILD_AGE_REQUIRED,
           },
         },
       },
@@ -118,18 +121,18 @@ const UserSchema = new mongoose.Schema(
     image: String,
     role: {
       type: String,
-      enum: ["user", "admin"],
-      default: "user",
+      enum: userRoleOptions,
+      default: USER_ROLES.USER,
     },
     status: {
       type: String,
-      enum: ["active", "deleted"],
-      default: "active",
+      enum: userStatusOptions,
+      default: USER_STATUSES.ACTIVE,
     },
     language: {
       type: String,
       enum: languageOptions,
-      default: "English",
+      default: LANGUAGE_OPTIONS.ENGLISH,
     },
   },
   { timestamps: true }
