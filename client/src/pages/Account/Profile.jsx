@@ -8,12 +8,7 @@ import customFetch from "../../utils/customFetch";
 import { toast } from "react-hot-toast";
 
 const Profile = () => {
-  // const { user, updateUser } = useAccountContext();
   const { user, updateUser } = useUser();
-
-  // useEffect(() => {
-  //   console.log("Current user in Profile:", user);
-  // }, [user]);
 
   if (!user) {
     return <div>Loading user data...</div>;
@@ -40,53 +35,49 @@ const Profile = () => {
 
   const handleEditSubmit = async (name, value) => {
     try {
-      let updatedData = { ...profileData };
+      let updatedData = {};
 
       if (name === "fullName") {
         updatedData.firstName = value.firstName;
         updatedData.lastName = value.lastName;
       } else if (name === "addChild") {
-        updatedData.kids = [...updatedData.kids, value];
+        updatedData.kids = user.kids ? [...user.kids, value] : [value];
       } else if (name === "kids") {
         updatedData.kids = value;
       } else {
         updatedData[name] = value;
       }
 
-      if (name !== "address") {
-        updatedData.address = {
-          country: user.address.country || "",
-          streetAddress: user.address.streetAddress || "",
-          apt: user.address.apt || "",
-          city: user.address.city || "",
-          province: user.address.province || "",
-          postalCode: user.address.postalCode || "",
-        };
-      }
+      if (updatedData.dob) updatedData.dob = formatDate(updatedData.dob);
 
-      // Convert date strings to Date objects before sending to the server
-      if (updatedData.dob) {
-        updatedData.dob = formatDate(updatedData.dob);
+      if (updatedData.kids) {
+        updatedData.kids = updatedData.kids.map((kid) => ({
+          ...kid,
+          dob: formatDate(kid.dob),
+        }));
       }
-      updatedData.kids = updatedData.kids.map((kid) => ({
-        ...kid,
-        dob: formatDate(kid.dob),
-      }));
 
       const response = await customFetch.patch("/user", updatedData);
       const updatedUser = response.data.user;
 
       updateUser(updatedUser);
 
-      setProfileData((prevData) => ({
-        ...prevData,
-        ...updatedUser,
-        dob: updatedUser.dob ? formatDate(new Date(updatedUser.dob)) : "",
-        kids: updatedUser.kids.map((kid) => ({
-          ...kid,
-          dob: formatDate(new Date(kid.dob)),
-        })),
-      }));
+      setProfileData((prevData) => {
+        if (name === "fullName") {
+          return {
+            ...prevData,
+            firstName: value.firstName,
+            lastName: value.lastName,
+          };
+        } else if (name === "addChild" || name === "kids") {
+          return {
+            ...prevData,
+            kids: updatedUser.kids,
+          };
+        } else {
+          return { ...prevData, [name]: value };
+        }
+      });
 
       toast.success("Profile updated successfully");
 
@@ -137,6 +128,9 @@ const Profile = () => {
     setIsAddingChild(true);
   };
 
+  const isAddressEmpty =
+    !profileData.address.streetAddress || !profileData.address.city;
+
   const profileSections = [
     {
       title: "First and last name:",
@@ -164,7 +158,12 @@ const Profile = () => {
       value: profileData.phone,
       inputType: "tel",
     },
-    { title: "Address:", name: "address", value: profileData.address },
+    {
+      title: "Address:",
+      name: "address",
+      value: profileData.address,
+      isEditingMode: isAddressEmpty,
+    },
     {
       title: "Child name and last name:",
       name: "kids",
@@ -175,6 +174,7 @@ const Profile = () => {
       name: "addChild",
       value: { firstName: "", lastName: "", dob: "" },
       showCard: showChildForm,
+      isEditingMode: true,
     },
   ];
 
@@ -186,13 +186,14 @@ const Profile = () => {
           title={ps.title}
           name={ps.name}
           value={ps.value}
-          isEmptyValue={
-            ps.name === "address" ? !ps.value.streetAddress : !ps.value
-          }
+          isEmptyValue={ps.name === "address" ? ps.isEditingMode : !ps.value}
           handleEditSubmit={handleEditSubmit}
           handleDeleteAction={handleDeleteChild}
           inputType={ps.inputType}
           showCard={ps.showCard}
+          isEditingMode={
+            ps.isEditingMode !== undefined ? ps.isEditingMode : false
+          }
         />
       ))}
       <div

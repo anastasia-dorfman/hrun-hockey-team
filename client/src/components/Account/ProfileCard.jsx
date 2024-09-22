@@ -22,22 +22,14 @@ const ProfileCard = ({
   showCard = true,
   handleEditSubmit,
   handleDeleteAction,
+  isEditingMode = false,
 }) => {
-  const [isEditing, setIsEditing] = useState(name === "kids" ? {} : false);
+  // const [isEditing, setIsEditing] = useState(name === "kids" ? {} : false);
+  const [isEditing, setIsEditing] = useState(isEditingMode);
   const [isFormDataValid, setIsFormDataValid] = useState(false);
   const [editedValue, setEditedValue] = useState(
     name === "kids" || name === "password" ? {} : value
   );
-
-  useEffect(() => {
-    if ((name === "address" && isAddressEmpty(value)) || name === "addChild") {
-      setIsEditing(true);
-    }
-  }, [name, value]);
-
-  const isAddressEmpty = (address) => {
-    return !address.streetAddress || !address.city;
-  };
 
   const isAddressValid = (address) => {
     const postalCodeRegex =
@@ -94,11 +86,6 @@ const ProfileCard = ({
 
   const handleEdit = (childId = null) => {
     if (name === "kids") {
-      // setIsEditing((prev) => {
-      //   const newState = { ...prev, [childId]: !prev[childId] };
-      //   console.log("New isEditing state:", newState);
-      //   return newState;
-      // });
       setIsEditing((prev) => ({
         ...prev,
         [childId]: !prev[childId],
@@ -225,9 +212,6 @@ const ProfileCard = ({
 
   const renderViewContent = (kid = null) => {
     if (name === "address") {
-      if (isAddressEmpty(editedValue)) {
-        return <span className="b1 value empty">No address provided</span>;
-      }
       return (
         <span className="b1 value">
           {editedValue.streetAddress},{" "}
@@ -288,9 +272,7 @@ const ProfileCard = ({
         >
           <div className="info">
             <h4>{title}</h4>
-            {isEditing || (name === "address" && isAddressEmpty(editedValue))
-              ? renderEditContent()
-              : renderViewContent()}
+            {isEditing ? renderEditContent() : renderViewContent()}
           </div>
           <div className="actions">
             <button

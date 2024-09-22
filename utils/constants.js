@@ -62,8 +62,9 @@ export const ALLOWED_UPDATE_FIELDS = {
 export const ADDRESS_FIELDS = {
   COUNTRY: "country",
   PROVINCE: "province",
+  CITY: "city",
   POSTAL_CODE: "postalCode",
-  STREET: "street",
+  STREET_ADDRESS: "streetAddress",
   APT: "apt",
 };
 

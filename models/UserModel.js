@@ -79,6 +79,11 @@ const UserSchema = new mongoose.Schema(
     address: {
       country: String,
       province: String,
+      city: {
+        type: String,
+        trim: true,
+        minlength: SCHEMA_CONSTRAINTS.CITY.MIN_LENGTH,
+      },
       postalCode: {
         type: String,
         validate: {
@@ -88,7 +93,11 @@ const UserSchema = new mongoose.Schema(
           message: (props) => ERROR_MESSAGES.INVALID_POSTAL_CODE,
         },
       },
-      street: String,
+      streetAddress: {
+        type: String,
+        trim: true,
+        minlength: SCHEMA_CONSTRAINTS.STREET_ADDRESS.MIN_LENGTH,
+      },
       apt: String,
     },
     kids: [

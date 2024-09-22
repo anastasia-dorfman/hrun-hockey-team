@@ -14,7 +14,6 @@ const groups = mockGroups;
 
 const Register = () => {
   const { cart, dispatch } = useContext(CartContext);
-  // const { user } = useAccountContext();
   const { user } = useUser();
   const [selectedGroups, setSelectedGroups] = useState({});
   const [checkedGroups, setCheckedGroups] = useState({});

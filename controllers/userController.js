@@ -75,7 +75,6 @@ export const updateUser = async (req, res) => {
       console.log("Object.entries(updateData)", Object.entries(updateData));
 
       for (const [key, value] of Object.entries(updateData)) {
-        console.log("updateData", updateData);
         console.log("key", key);
         console.log("value", value);
         if (key !== "role" && key !== "userId") {

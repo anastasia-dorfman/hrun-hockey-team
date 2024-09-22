@@ -31,18 +31,13 @@ const Settings = () => {
         updatedData[name] = value;
       }
 
-      console.log("Updating user data:", updatedData);
-
       const response = await customFetch.patch("/user", updatedData);
       const updatedUser = response.data.user;
-
-      console.log("Server response:", response.data);
 
       updateUser(updatedUser);
 
       setProfileData((prevData) => ({
         ...prevData,
-        // ...updatedUser,
         [name]: value,
       }));
 
