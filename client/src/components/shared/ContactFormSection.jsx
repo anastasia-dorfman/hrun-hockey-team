@@ -1,12 +1,19 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import { LuPhone, LuMail, LuPen } from "react-icons/lu";
-import Wrapper from "../../assets/wrappers/HomePageSections";
 import { useTeam } from "../../context/TeamContext";
+import {
+  ERROR_MESSAGES,
+  VALIDATION_PATTERNS,
+} from "../../utils/clientConstants";
 import FormRow from "./FormRow";
+import Wrapper from "../../assets/wrappers/HomePageSections";
 
 const ContactFormSection = ({ page = "" }) => {
   const { teamName, address, phone, email } = useTeam();
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -21,6 +28,68 @@ const ContactFormSection = ({ page = "" }) => {
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
     }));
+  };
+
+  const validateForm = () => {
+    let newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = ERROR_MESSAGES.FIELD_REQUIRED("Name");
+    }
+
+    if (!VALIDATION_PATTERNS.EMAIL.test(formData.email)) {
+      newErrors.email = ERROR_MESSAGES.INVALID_EMAIL_FORMAT;
+    }
+
+    if (formData.message.length < 10) {
+      newErrors.message = "Message must be at least 10 characters long";
+    }
+
+    if (!formData.agreeWithDataCollection) {
+      newErrors.agreeWithDataCollection =
+        ERROR_MESSAGES.AGREE_WITH_DATA_COLLECTION;
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      setIsSubmitting(true);
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            message: formData.message,
+          }),
+        });
+
+        if (response.ok) {
+          setFormData({
+            name: "",
+            phone: "",
+            email: "",
+            message: "",
+            agreeWithDataCollection: false,
+          });
+          toast.success("Message sent successfully!");
+        } else {
+          toast.error("Failed to send message");
+        }
+      } catch (error) {
+        console.error("Error sending email:", error);
+        alert("Failed to send message. Please try again later.");
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
   };
 
   return (
@@ -45,36 +114,41 @@ const ContactFormSection = ({ page = "" }) => {
               </p>
             </div>
           </div>
-          <form className="form">
+          <form className="form" onSubmit={handleSubmit}>
             <FormRow
               type="text"
               name="name"
               value={formData.name}
+              isRequired={false}
               onChange={handleInputChange}
+              error={errors.name}
             />
             <FormRow
               type="text"
               name="phone"
-              isRequired={false}
               value={formData.phone}
+              isRequired={false}
               onChange={handleInputChange}
             />
             <FormRow
               type="email"
               name="email"
               value={formData.email}
+              isRequired={false}
               onChange={handleInputChange}
+              error={errors.email}
             />
             <FormRow
               type="textarea"
               name="message"
               isLabeled={true}
               labelIcon={<LuPen />}
-              // labelText="How can our team help you?"
               labelText="How we can help you?"
               isPlaceholder={false}
               value={formData.message}
+              isRequired={false}
               onChange={handleInputChange}
+              error={errors.message}
             />
             <FormRow
               type="checkbox"
@@ -82,12 +156,13 @@ const ContactFormSection = ({ page = "" }) => {
               isLabeled
               labelText="I agree that my data can be collected and stored."
               value={formData.agreeWithDataCollection}
+              isRequired={false}
               onChange={handleInputChange}
+              error={errors.agreeWithDataCollection}
             />
 
             <button type="submit" className="selected long b2 contact-us-btn">
               Contact us
-              {/* Get in touch */}
             </button>
           </form>
         </div>
