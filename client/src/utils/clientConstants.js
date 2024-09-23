@@ -77,6 +77,7 @@ export const KID_FIELDS = {
 };
 
 export const ERROR_MESSAGES = {
+  FIELD_REQUIRED: (field) => `${field} is required\n`,
   FIRST_NAME_REQUIRED: "First name is required\n",
   LAST_NAME_REQUIRED: "Last name is required\n",
   NAME_TOO_SHORT: (field) =>

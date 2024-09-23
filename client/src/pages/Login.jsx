@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import toast from "react-hot-toast";
 import customFetch from "../utils/customFetch";
+import { VALIDATION_PATTERNS, ERROR_MESSAGES } from "../utils/clientConstants";
 import { useUser } from "../context/UserContext";
 import FormRow from "../components/FormRow";
 import Wrapper from "../assets/wrappers/CreateAccountAndLogin";
@@ -16,6 +17,23 @@ import Wrapper from "../assets/wrappers/CreateAccountAndLogin";
 export const action = async ({ request }) => {
   const formData = await request.formData();
   const loginData = Object.fromEntries(formData);
+  const errors = {};
+
+  // Validation
+  if (!loginData.email.trim()) {
+    errors.email = ERROR_MESSAGES.FIELD_REQUIRED("Email");
+  } else if (!VALIDATION_PATTERNS.EMAIL.test(loginData.email.trim())) {
+    errors.email = ERROR_MESSAGES.INVALID_EMAIL_FORMAT;
+  }
+
+  if (!loginData.password) {
+    errors.password = ERROR_MESSAGES.FIELD_REQUIRED("Password");
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return errors;
+  }
+
   try {
     const loginResponse = await customFetch.post("/auth/login", loginData);
 
@@ -52,7 +70,7 @@ export const action = async ({ request }) => {
       errorMessage = error.message || "An error occurred during login.";
     }
 
-    return { success: false, message: errorMessage };
+    return { success: false, serverError: errorMessage };
   }
 };
 
@@ -70,15 +88,18 @@ const Login = () => {
       navigate("/account");
     } else if (actionData?.isDeleted) {
       setShowRestoreOption(true);
-      toast.error(actionData.message);
-    } else if (actionData?.message) {
-      toast.error(<div className="custom-toast">{actionData.message}</div>, {
-        duration: 2000,
-        style: {
-          maxWidth: "95%",
-          width: "600px",
-        },
-      });
+      toast.error(actionData.serverError);
+    } else if (actionData?.serverError) {
+      toast.error(
+        <div className="custom-toast">{actionData.serverError}</div>,
+        {
+          duration: 2000,
+          style: {
+            maxWidth: "95%",
+            width: "600px",
+          },
+        }
+      );
     }
   }, [actionData, updateUser, navigate]);
 
@@ -103,25 +124,17 @@ const Login = () => {
         <FormRow
           type="email"
           name="email"
-          // defaultValue="john.doe@gmail.com"
-          //   value={formData.email}
-          //   onChange={handleInputChange}
-          //   className={errors.email ? "error" : ""}
-          //   isRequired={false}
+          className={actionData?.name ? "error" : ""}
+          isRequired={false}
+          error={actionData?.email}
         />
-        {/* {errors.email && <p className="error-message b5">{errors.email}</p>} */}
         <FormRow
           type="password"
           name="password"
-          // defaultValue="secret123"
-          //   value={formData.password}
-          //   onChange={handleInputChange}
-          //   className={errors.password ? "error" : ""}
-          //   isRequired={false}
+          className={actionData?.name ? "error" : ""}
+          isRequired={false}
+          error={actionData?.password}
         />
-        {/* {errors.password && (
-          <p className="error-message b5">{errors.password}</p>
-        )} */}
         <div className="forgot-password b5">
           {/* TODO */}
           <Link to="/restore-password">Forgot password?</Link>
