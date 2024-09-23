@@ -1,5 +1,5 @@
 import NavLinks from "./AccountNavLinks";
-import Logo from "../../components/Logo";
+import Logo from "../../components/shared/Logo";
 import Wrapper from "../../assets/wrappers/Account/AccountBigSidebar";
 import { useAccountContext } from "../../pages/Account/AccountLayout";
 

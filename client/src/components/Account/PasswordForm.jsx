@@ -1,4 +1,4 @@
-import FormRow from "../FormRow";
+import FormRow from "../shared/FormRow";
 
 const PasswordForm = ({ passwordObject, onChange, errors }) => {
   const handleChange = (e) => {

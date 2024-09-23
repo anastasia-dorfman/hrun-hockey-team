@@ -3,12 +3,12 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import { LiaShoppingCartSolid } from "react-icons/lia";
 import { FaBars, FaTimes, FaRegUser } from "react-icons/fa";
-import { CartContext } from "../context/CartContext";
+import { CartContext } from "../../context/CartContext";
 import Logo from "./Logo";
 import LanguageSwitcher from "./LanguageSwitcher";
 import ThemeSwitcher from "./ThemeSwitcher";
-import TeamDropdown from "./TeamDropdown ";
-import Wrapper from "../assets/wrappers/Header";
+import TeamDropdown from "../TeamDropdown ";
+import Wrapper from "../../assets/wrappers/Header";
 
 const Header = ({ isHomePage }) => {
   const { cart } = useContext(CartContext);

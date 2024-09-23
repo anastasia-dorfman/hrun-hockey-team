@@ -1,5 +1,5 @@
 import { useTheme } from "../context/ThemeContext";
-import Socials from "./Socials";
+import Socials from "./shared/Socials";
 import Wrapper from "../assets/wrappers/HeroSection";
 
 const HeroSection = () => {

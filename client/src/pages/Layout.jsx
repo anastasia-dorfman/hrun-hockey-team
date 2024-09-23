@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { useTheme } from "../context/ThemeContext";
 import { UserProvider } from "../context/UserContext";
 import customFetch from "../utils/customFetch";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../components/shared/Header";
+import Footer from "../components/shared/Footer";
 import ScrollToTop from "../components/shared/ScrollToTop";
 
 const Main = styled.main`

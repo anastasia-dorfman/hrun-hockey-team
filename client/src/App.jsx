@@ -30,7 +30,7 @@ import Cart, { loader as cartLoader } from "./pages/Cart";
 import Tickets from "./pages/Tickets";
 import NotFound from "./pages/NotFound";
 import "./App.css";
-import PageOverlay from "./components/PageOverlay";
+import PageOverlay from "./components/shared/PageOverlay";
 import ProtectedRoute from "./components/shared/ProtectedRoute";
 import ErrorBoundry from "./components/shared/ErrorBoundry";
 

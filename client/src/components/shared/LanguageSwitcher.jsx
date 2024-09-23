@@ -1,5 +1,5 @@
-import Wrapper from "../assets/wrappers/LanguageSwitcher";
-import { useLanguage } from "../context/LanguageContext";
+import Wrapper from "../../assets/wrappers/LanguageSwitcher";
+import { useLanguage } from "../../context/LanguageContext";
 import { useState } from "react";
 
 export default function LanguageSwitcher() {

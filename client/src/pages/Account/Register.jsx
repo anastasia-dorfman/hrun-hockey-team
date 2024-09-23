@@ -2,12 +2,11 @@ import React, { useContext, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { CartContext } from "../../context/CartContext";
 import { useUser } from "../../context/UserContext";
-import { useAccountContext } from "../../pages/Account/AccountLayout";
 import { mockGroups } from "../../data/mockData";
-import showToast from "../../components/CustomToast";
-import Wrapper from "../../assets/wrappers/Account/Register";
+import showToast from "../../components/shared/CustomToast";
+import FormRow from "../../components/shared/FormRow";
 import { formatTime, getDateString } from "../../utils/functions";
-import FormRow from "../../components/FormRow";
+import Wrapper from "../../assets/wrappers/Account/Register";
 
 // TODO get groups for particular kids???
 const groups = mockGroups;

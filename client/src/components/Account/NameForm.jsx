@@ -1,4 +1,4 @@
-import FormRow from "../FormRow";
+import FormRow from "../shared/FormRow";
 
 const NameForm = ({ fullName, onChange, errors }) => {
   const handleChange = (e) => {

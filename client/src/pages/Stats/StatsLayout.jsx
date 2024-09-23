@@ -8,7 +8,7 @@ import {
 import Wrapper from "../../assets/wrappers/StatsLayout";
 import Dropdown from "../../components/Dropdown";
 import DatePicker from "../../components/DatePicker";
-import Breadcrumb from "../../components/Breadcrumb";
+import Breadcrumb from "../../components/shared/Breadcrumb";
 import {
   GAME_TYPE,
   FRANCHISES,

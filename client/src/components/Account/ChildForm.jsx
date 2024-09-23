@@ -1,5 +1,5 @@
 import React from "react";
-import FormRow from "../FormRow";
+import FormRow from "../shared/FormRow";
 import { parseAndValidateDate } from "../../utils/functions";
 
 const ChildForm = ({ child, onChange, errors }) => {

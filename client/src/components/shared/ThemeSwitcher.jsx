@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
-import Wrapper from "../assets/wrappers/ThemeSwitcher";
-import { useTheme } from "../context/ThemeContext";
+import Wrapper from "../../assets/wrappers/ThemeSwitcher";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function ThemeSwitcher() {
   const { theme, toggleTheme } = useTheme();

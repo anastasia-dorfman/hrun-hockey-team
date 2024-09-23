@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import customFetch from "../utils/customFetch";
 import { VALIDATION_PATTERNS, ERROR_MESSAGES } from "../utils/clientConstants";
 import { useUser } from "../context/UserContext";
-import FormRow from "../components/FormRow";
+import FormRow from "../components/shared/FormRow";
 import Wrapper from "../assets/wrappers/CreateAccountAndLogin";
 
 export const action = async ({ request }) => {

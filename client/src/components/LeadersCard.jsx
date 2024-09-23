@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Wrapper from "../assets/wrappers/LeadersCard";
-import Logo from "./Logo";
+import Logo from "./shared/Logo";
 import { POSITION_SHORTCUTS } from "../utils/clientConstants";
 
 const LeadersCard = ({ skaterType, players, criteria }) => {

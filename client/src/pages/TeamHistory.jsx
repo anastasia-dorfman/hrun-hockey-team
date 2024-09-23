@@ -3,7 +3,7 @@ import { useLoaderData } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import Wrapper from "../assets/wrappers/TeamHistory.js";
 import MilestoneCard from "../components/MilestoneCard.jsx";
-import Breadcrumb from "../components/Breadcrumb";
+import Breadcrumb from "../components/shared/Breadcrumb";
 import { mockMilestones } from "../data/mockData.js";
 
 const useMockData = true;

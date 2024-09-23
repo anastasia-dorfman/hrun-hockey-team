@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import FormRow from "../FormRow";
+import FormRow from "../shared/FormRow";
 import AddressForm from "./AddressForm";
 import ChildForm from "./ChildForm";
 import NameForm from "./NameForm";
@@ -15,7 +15,7 @@ import {
   ERROR_MESSAGES,
   SCHEMA_CONSTRAINTS,
 } from "../../utils/clientConstants";
-import showToast from "../CustomToast";
+import showToast from "../shared/CustomToast";
 
 const ProfileCard = ({
   title,

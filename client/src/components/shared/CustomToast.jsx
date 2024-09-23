@@ -1,10 +1,9 @@
 import { useNavigate } from "react-router-dom";
-// import { BrowserRouter } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaExclamationCircle, FaInfoCircle } from "react-icons/fa";
 import { BsCheck2Circle } from "react-icons/bs";
-import { useTheme } from "../context/ThemeContext";
-import Wrapper from "../assets/wrappers/CustomToast";
+import { useTheme } from "../../context/ThemeContext";
+import Wrapper from "../../assets/wrappers/CustomToast";
 
 const RouterWrapper = ({ children }) => (
   <BrowserRouter>{children}</BrowserRouter>

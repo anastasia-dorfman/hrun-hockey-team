@@ -5,7 +5,7 @@ import { GoTag } from "react-icons/go";
 import toast from "react-hot-toast";
 import Wrapper from "../assets/wrappers/Cart";
 import ProductDetailCard from "../components/ProductDetailCard";
-import FormRow from "../components/FormRow";
+import FormRow from "../components/shared/FormRow";
 import { CartContext } from "../context/CartContext";
 import customFetch from "../utils/customFetch";
 import { shouldUseMockData } from "../utils/environment";

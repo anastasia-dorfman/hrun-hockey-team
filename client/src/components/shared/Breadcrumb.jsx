@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Wrapper from "../assets/wrappers/Breadcrumb";
+import Wrapper from "../../assets/wrappers/Breadcrumb";
 
 const Breadcrumb = ({ links }) => (
   <Wrapper>

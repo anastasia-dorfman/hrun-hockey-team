@@ -31,3 +31,9 @@ client/node_modules
 client/dist
 client/dist-ssr
 client/*.local
+
+# Server folder
+server/node_modules
+server/dist
+server/dist-ssr
+server/*.local

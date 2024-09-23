@@ -1,10 +1,10 @@
-import Wrapper from "../assets/wrappers/Footer";
+import Wrapper from "../../assets/wrappers/Footer";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import Logo from "./Logo";
 import Socials from "./Socials";
 import ThemeSwitcher from "./ThemeSwitcher";
-import { useTeam } from "../context/TeamContext";
+import { useTeam } from "../../context/TeamContext";
 
 export default function Footer() {
   const { teamName, address, phone, email } = useTeam();

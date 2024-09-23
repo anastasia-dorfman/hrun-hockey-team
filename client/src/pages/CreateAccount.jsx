@@ -2,15 +2,15 @@ import React from "react";
 import { Form, useActionData, useNavigation, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import customFetch from "../utils/customFetch";
-import FormRow from "../components/FormRow";
-import showToast from "../components/CustomToast";
-import Wrapper from "../assets/wrappers/CreateAccountAndLogin";
-import { isAdult, parseAndValidateDate } from "../utils/functions";
 import {
   ERROR_MESSAGES,
   SCHEMA_CONSTRAINTS,
   VALIDATION_PATTERNS,
 } from "../utils/clientConstants";
+import { isAdult, parseAndValidateDate } from "../utils/functions";
+import showToast from "../components/shared/CustomToast";
+import FormRow from "../components/shared/FormRow";
+import Wrapper from "../assets/wrappers/CreateAccountAndLogin";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();

@@ -3,7 +3,7 @@ import { useSearchParams, useLoaderData } from "react-router-dom";
 // import { toast } from "react-toastify";
 import Wrapper from "../assets/wrappers/Shop";
 import ProductCardShop from "../components/ProductCardShop";
-import ContactFormSection from "../components/ContactFormSection";
+import ContactFormSection from "../components/shared/ContactFormSection";
 import customFetch from "../utils/customFetch";
 import { categories, types } from "../utils/clientConstants";
 import { shouldUseMockData } from "../utils/environment";
