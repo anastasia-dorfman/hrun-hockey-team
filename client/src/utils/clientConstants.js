@@ -15,6 +15,7 @@ export const VALIDATION_PATTERNS = {
   POSTAL_CODE:
     /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i,
   PASSWORD: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])/,
+  DATE: /^(?<month>\w+)\s(?<day>\d{1,2})(,?\s?(?<year>\d{4})?)?$/,
 };
 
 export const SCHEMA_CONSTRAINTS = {
@@ -106,6 +107,7 @@ export const ERROR_MESSAGES = {
   INVALID_PASSWORD_FORMAT:
     "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character\n",
   INVALID_STATUS: "Invalid status option\n",
+  AGREE_WITH_DATA_COLLECTION: "You must agree with data collection\n",
 };
 
 export const PRODUCT_CATEGORY = {

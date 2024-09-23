@@ -6,6 +6,11 @@ import FormRow from "../components/FormRow";
 import showToast from "../components/CustomToast";
 import Wrapper from "../assets/wrappers/CreateAccountAndLogin";
 import { isAdult, parseAndValidateDate } from "../utils/functions";
+import {
+  ERROR_MESSAGES,
+  SCHEMA_CONSTRAINTS,
+  VALIDATION_PATTERNS,
+} from "../utils/clientConstants";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
@@ -13,53 +18,48 @@ export const action = async ({ request }) => {
   const errors = {};
 
   // Validation
-  if (!data.firstName.trim() || !data.lastName.trim()) {
-    errors.name = "First and last name are required";
+  if (!data.firstName.trim()) {
+    errors.firstName = ERROR_MESSAGES.FIRST_NAME_REQUIRED;
+  } else if (
+    data.firstName.trim().length < SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH
+  ) {
+    errors.firstName = ERROR_MESSAGES.NAME_TOO_SHORT("First name");
   }
 
-  if (data.dob.trim()) {
-    const parsedDate = parseAndValidateDate(data.dob.trim());
-    if (!parsedDate) {
-      errors.dob = "Invalid date format. Please use DD/MM/YYYY or DD-MM-YYYY.";
-    } else if (!isAdult(parsedDate)) {
-      errors.dob = "You must be at least 18 years old";
+  if (!data.lastName.trim()) {
+    errors.lastName = ERROR_MESSAGES.LAST_NAME_REQUIRED;
+  } else if (data.lastName.trim().length < SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH) {
+    errors.lastName = ERROR_MESSAGES.NAME_TOO_SHORT("Last name");
+  }
+
+  if (data.dob) {
+    if (!isAdult(data.dob)) {
+      errors.dob = ERROR_MESSAGES.ADULT_AGE_REQUIRED;
     }
   }
 
-  if (!data.phone.trim()) {
-    errors.phone = "Phone number is required";
-  } else if (
-    !/^\+?(\d{1,3})?[-.\s]?(\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4})$/.test(
-      data.phone.trim()
-    )
-  ) {
-    errors.phone =
-      "Phone number must be valid and in the format (123) 456-7890";
+  if (!VALIDATION_PATTERNS.PHONE.test(data.phone.trim())) {
+    errors.phone = ERROR_MESSAGES.INVALID_PHONE_FORMAT;
   }
 
   if (!data.email.trim()) {
-    errors.email = "Email is required";
-  } else if (!/^\S+@\S+\.\S+$/.test(data.email.trim())) {
-    errors.email = "Invalid email format";
+    errors.email = ERROR_MESSAGES.FIELD_REQUIRED("Email");
+  } else if (!VALIDATION_PATTERNS.EMAIL.test(data.email.trim())) {
+    errors.email = ERROR_MESSAGES.INVALID_EMAIL_FORMAT;
   }
 
-  if (!data.password) {
-    errors.password = "Password is required";
-  } else if (data.password.length < 8) {
-    errors.password = "Password must be at least 8 characters long";
-  } else if (
-    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])/.test(data.password)
-  ) {
-    errors.password =
-      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
+  if (!data.password.trim()) {
+    errors.password = ERROR_MESSAGES.FIELD_REQUIRED("Password");
+  } else if (!VALIDATION_PATTERNS.PASSWORD.test(data.password)) {
+    errors.password = ERROR_MESSAGES.INVALID_PASSWORD_FORMAT;
   }
 
   if (data.password !== data.confirmPassword) {
-    errors.confirmPassword = "Passwords do not match";
+    errors.confirmPassword = ERROR_MESSAGES.PASSWORDS_DO_NOT_MATCH;
   }
 
   if (data.agreeWithDataCollection !== "on") {
-    errors.agreeWithDataCollection = "You must agree with data collection";
+    errors.agreeWithDataCollection = ERROR_MESSAGES.AGREE_WITH_DATA_COLLECTION;
   }
 
   if (Object.keys(errors).length > 0) {
@@ -121,30 +121,27 @@ const CreateAccount = () => {
             type="text"
             name="firstName"
             placeholder="First Name"
-            className={actionData?.name ? "error" : ""}
+            className={actionData?.firstName ? "error" : ""}
             isRequired={false}
+            error={actionData?.firstName}
           />
           <FormRow
             type="text"
             name="lastName"
             placeholder="Last Name"
-            className={actionData?.name ? "error" : ""}
+            className={actionData?.lastName ? "error" : ""}
             isRequired={false}
+            error={actionData?.lastName}
           />
         </div>
-        {actionData?.name && (
-          <p className="error-message b5">{actionData.name}</p>
-        )}
         <FormRow
-          type="text"
+          type="date"
           name="dob"
-          placeholder="Birthday (DD/MM/YYYY)"
+          placeholder="Birthday (DD-MM-YYYY)"
           className={actionData?.dob ? "error" : ""}
           isRequired={false}
+          error={actionData?.dob}
         />
-        {actionData?.dob && (
-          <p className="error-message b5">{actionData.dob}</p>
-        )}
         <hr />
         <FormRow
           type="text"
@@ -152,19 +149,15 @@ const CreateAccount = () => {
           placeholder="Phone number (+1506 469 5289)"
           className={actionData?.phone ? "error" : ""}
           isRequired={false}
+          error={actionData?.phone}
         />
-        {actionData?.phone && (
-          <p className="error-message b5">{actionData.phone}</p>
-        )}
         <FormRow
           type="email"
           name="email"
           className={actionData?.email ? "error" : ""}
           isRequired={false}
+          error={actionData?.email}
         />
-        {actionData?.email && (
-          <p className="error-message b5">{actionData.email}</p>
-        )}
         <FormRow
           type="checkbox"
           name="agreeWithDataCollection"
@@ -172,32 +165,24 @@ const CreateAccount = () => {
           labelText="I agree that my data is collected and stored."
           className={actionData?.agreeWithDataCollection ? "error" : ""}
           isRequired={false}
+          error={actionData?.agreeWithDataCollection}
         />
-        {actionData?.agreeWithDataCollection && (
-          <p className="error-message b5">
-            {actionData.agreeWithDataCollection}
-          </p>
-        )}
         <hr />
         <FormRow
           type="password"
           name="password"
           className={actionData?.password ? "error" : ""}
           isRequired={false}
+          error={actionData?.password}
         />
-        {actionData?.password && (
-          <p className="error-message b5">{actionData.password}</p>
-        )}
         <FormRow
           type="password"
           name="confirmPassword"
           placeholder="Confirm Password"
           className={actionData?.confirmPassword ? "error" : ""}
           isRequired={false}
+          error={actionData?.confirmPassword}
         />
-        {actionData?.confirmPassword && (
-          <p className="error-message b5">{actionData.confirmPassword}</p>
-        )}
         <button type="submit" className="selected" disabled={isSubmitting}>
           {isSubmitting ? "Submitting..." : "Continue"}
         </button>

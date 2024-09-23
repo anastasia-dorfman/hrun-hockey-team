@@ -1,6 +1,7 @@
 import { format, parse } from "date-fns";
+import { VALIDATION_PATTERNS } from "./clientConstants";
 
-export const getFormattedDate = (date, short = true) => {
+export const getDateString = (date, short = true) => {
   const validDate = date instanceof Date ? date : new Date(date);
   if (isNaN(validDate)) {
     throw new Error("Invalid date");
@@ -11,31 +12,41 @@ export const getFormattedDate = (date, short = true) => {
   return validDate.toLocaleDateString("en-US", options);
 };
 
-// export function formatDate(date) {
-//   return date.toISOString().split("T")[0]; //  "yyyy-MM-dd"
-// }
-
-export const formatDate = (date) => {
-  const parsedDate = new Date(date);
+export const parseAndValidateDate = (date) => {
+  const parsedDate = date instanceof Date ? date : new Date(date);
 
   if (!isNaN(parsedDate)) {
-    return parsedDate.toISOString().split("T")[0];
-  } else {
-    console.error("Invalid date:", date);
-    return "Invalid Date";
+    return parsedDate.toISOString().split("T")[0]; // ISO format (YYYY-MM-DD)
   }
+
+  const dateRegex = VALIDATION_PATTERNS.DATE;
+
+  const match = date.match(dateRegex);
+  if (match && match.groups) {
+    const { month, day, year } = match.groups;
+
+    const monthIndex = new Date(Date.parse(month + " 1")).getMonth();
+    const currentYear = new Date().getFullYear(); // Fallback to the current year if year is not provided
+
+    const formattedDate = new Date(
+      year || currentYear, // fallback to current year if not provided
+      monthIndex,
+      day
+    );
+
+    if (!isNaN(formattedDate)) {
+      return formattedDate.toISOString().split("T")[0];
+    }
+  }
+
+  console.error("Invalid date:", date);
+  return "Invalid Date";
 };
 
 export const formatTime = (timeString) => {
   const date = parse(timeString, "HH:mm:ss", new Date());
   return format(date, "h:mm a");
 };
-
-// export const calculateAge = (dob) => {
-//   const ageDiff = Date.now() - new Date(dob).getTime();
-//   const ageDate = new Date(ageDiff);
-//   return Math.abs(ageDate.getUTCFullYear() - 1970);
-// };
 
 export const calculateAge = (dob) => {
   const today = new Date();
@@ -51,37 +62,37 @@ export const calculateAge = (dob) => {
   return age;
 };
 
-export const parseAndValidateDate = (dob) => {
-  dob = dob.trim();
+// export const parseAndValidateDate = (dob) => {
+//   dob = dob.trim();
 
-  if (!/^\d{1,2}[\/-]\d{1,2}[\/-]\d{4}$/.test(dob)) {
-    console.log("Invalid date format:", dob);
-    return null;
-  }
+//   if (!/^\d{1,2}[\/-]\d{1,2}[\/-]\d{4}$/.test(dob)) {
+//     console.log("Invalid date format:", dob);
+//     return null;
+//   }
 
-  const [day, month, year] = dob.includes("/")
-    ? dob.split("/")
-    : dob.split("-");
+//   const [day, month, year] = dob.includes("/")
+//     ? dob.split("/")
+//     : dob.split("-");
 
-  if (isNaN(day) || isNaN(month) || isNaN(year)) {
-    console.log("Invalid date components:", day, month, year);
-    return null;
-  }
+//   if (isNaN(day) || isNaN(month) || isNaN(year)) {
+//     console.log("Invalid date components:", day, month, year);
+//     return null;
+//   }
 
-  const date = new Date(year, month - 1, day);
+//   const date = new Date(year, month - 1, day);
 
-  if (
-    date.getDate() !== parseInt(day, 10) ||
-    date.getMonth() !== parseInt(month, 10) - 1 ||
-    date.getFullYear() !== parseInt(year, 10)
-  ) {
-    console.log("Invalid date after parsing:", date);
-    return null;
-  }
+//   if (
+//     date.getDate() !== parseInt(day, 10) ||
+//     date.getMonth() !== parseInt(month, 10) - 1 ||
+//     date.getFullYear() !== parseInt(year, 10)
+//   ) {
+//     console.log("Invalid date after parsing:", date);
+//     return null;
+//   }
 
-  console.log("Valid date:", date);
-  return date;
-};
+//   console.log("Valid date:", date);
+//   return date;
+// };
 
 export const isAdult = (dob) => {
   return calculateAge(dob) >= 18;

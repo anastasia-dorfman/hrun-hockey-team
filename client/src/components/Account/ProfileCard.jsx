@@ -4,7 +4,12 @@ import AddressForm from "./AddressForm";
 import ChildForm from "./ChildForm";
 import NameForm from "./NameForm";
 import PasswordForm from "./PasswordForm";
-import { formatDate, isAdult, isChild } from "../../utils/functions";
+import {
+  parseAndValidateDate,
+  isAdult,
+  isChild,
+  getDateString,
+} from "../../utils/functions";
 import {
   VALIDATION_PATTERNS,
   ERROR_MESSAGES,
@@ -252,11 +257,11 @@ const ProfileCard = ({
       <FormRow
         type={inputType}
         name={name}
-        value={editedValue}
+        value={name === "dob" ? parseAndValidateDate(editedValue) : editedValue}
         options={options.map((o) => ({ value: o, label: o }))}
         onChange={handleChange}
         isLabeled={false}
-        max={formatDate(
+        max={parseAndValidateDate(
           new Date(
             new Date().setFullYear(new Date().getFullYear() - 18) - 86400000
           )
@@ -286,7 +291,7 @@ const ProfileCard = ({
             {kid.firstName} {kid.lastName}
           </span>
           <h4 className="child-dob">Date of birth:</h4>
-          <span className="b1 value">{formatDate(new Date(kid.dob))}</span>
+          <span className="b1 value">{getDateString(kid.dob, false)}</span>
         </div>
       );
     }

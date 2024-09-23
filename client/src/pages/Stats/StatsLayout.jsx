@@ -16,13 +16,9 @@ import {
   REPORTS,
 } from "../../utils/clientConstants";
 import { mockTeamStats } from "../../data/mockData";
-import { formatDate } from "../../utils/functions";
+import { parseAndValidateDate } from "../../utils/functions";
 
 const stats = mockTeamStats;
-
-// function formatDate(date) {
-//   return date.toISOString().split("T")[0]; //  "yyyy-MM-dd"
-// }
 
 export default function StatsLayout() {
   function getCurrentHockeySeason() {
@@ -46,15 +42,10 @@ export default function StatsLayout() {
     }
 
     return {
-      seasonStart: formatDate(seasonStart),
-      seasonEnd: formatDate(seasonEnd),
+      seasonStart: parseAndValidateDate(seasonStart),
+      seasonEnd: parseAndValidateDate(seasonEnd),
     };
   }
-
-  // function formatDate(date) {
-  //   const options = { year: "numeric", month: "short", day: "2-digit" };
-  //   return date.toLocaleDateString("en-US", options);
-  // }
 
   const currentSeason = getCurrentHockeySeason();
 

@@ -3,7 +3,7 @@ import { useAccountContext } from "./AccountLayout";
 import { useUser } from "../../context/UserContext";
 import ProfileCard from "../../components/Account/ProfileCard";
 import Wrapper from "../../assets/wrappers/Account/Profile";
-import { formatDate, getFormattedDate } from "../../utils/functions";
+import { getDateString, parseAndValidateDate } from "../../utils/functions";
 import customFetch from "../../utils/customFetch";
 import { toast } from "react-hot-toast";
 
@@ -12,13 +12,14 @@ const Profile = () => {
   const [profileData, setProfileData] = useState(null);
   const [showChildForm, setShowChildForm] = useState(false);
   const [isAddingChild, setIsAddingChild] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (user) {
       setProfileData({
         firstName: user.firstName,
         lastName: user.lastName,
-        dob: user.dob ? getFormattedDate(new Date(user.dob), false) : "",
+        dob: user.dob ? getDateString(new Date(user.dob), false) : "",
         email: user.email,
         phone: user.phone || "",
         address: user.address || {
@@ -40,6 +41,7 @@ const Profile = () => {
 
   const handleEditSubmit = async (name, value) => {
     try {
+      setIsSubmitting(true);
       let updatedData = {};
 
       if (name === "fullName") {
@@ -53,12 +55,13 @@ const Profile = () => {
         updatedData[name] = value;
       }
 
-      if (updatedData.dob) updatedData.dob = formatDate(updatedData.dob);
+      if (updatedData.dob)
+        updatedData.dob = parseAndValidateDate(updatedData.dob);
 
       if (updatedData.kids) {
         updatedData.kids = updatedData.kids.map((kid) => ({
           ...kid,
-          dob: formatDate(kid.dob),
+          dob: parseAndValidateDate(kid.dob),
         }));
       }
 
@@ -66,23 +69,6 @@ const Profile = () => {
       const updatedUser = response.data.user;
 
       updateUser(updatedUser);
-
-      // setProfileData((prevData) => {
-      //   if (name === "fullName") {
-      //     return {
-      //       ...prevData,
-      //       firstName: value.firstName,
-      //       lastName: value.lastName,
-      //     };
-      //   } else if (name === "addChild" || name === "kids") {
-      //     return {
-      //       ...prevData,
-      //       kids: updatedUser.kids,
-      //     };
-      //   } else {
-      //     return { ...prevData, [name]: value };
-      //   }
-      // });
 
       toast.success("Profile updated successfully");
 
@@ -93,6 +79,8 @@ const Profile = () => {
     } catch (error) {
       console.error("Error updating profile:", error);
       toast.error(error.response?.data?.msg || "Error updating profile");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -101,11 +89,12 @@ const Profile = () => {
       let updatedKids = profileData.kids.filter((kid) => kid.kidId !== childId);
       updatedKids = updatedKids.map((kid) => ({
         ...kid,
-        dob: formatDate(kid.dob),
+        dob: parseAndValidateDate(kid.dob),
       }));
 
       const updatedData = {
         ...profileData,
+        dob: parseAndValidateDate(profileData.dob),
         kids: updatedKids,
       };
 
@@ -117,7 +106,7 @@ const Profile = () => {
         ...prevData,
         kids: updatedUser.kids.map((kid) => ({
           ...kid,
-          dob: formatDate(new Date(kid.dob)),
+          dob: parseAndValidateDate(new Date(kid.dob)),
         })),
       }));
 
@@ -178,7 +167,7 @@ const Profile = () => {
       title: "Add new child:",
       name: "addChild",
       value: { firstName: "", lastName: "", dob: "" },
-      showCard: showChildForm,
+      showCard: showChildForm && !isSubmitting,
       isEditingMode: true,
     },
   ];
@@ -203,7 +192,7 @@ const Profile = () => {
       ))}
       <div
         className={`info-card add-kids ${isAddingChild ? "disabled" : ""}`}
-        onClick={!isAddingChild ? showAddChildForm : null}
+        onClick={!isAddingChild && !isSubmitting ? showAddChildForm : null}
       >
         <h4>+ Add kids to your account</h4>
       </div>

@@ -167,8 +167,8 @@ const FormRow = ({
             {renderLabel()}
           </label>
         )}
-        {error && <p className="error-message b5">{error}</p>}
       </div>
+      {error && <p className="error-message b5">{error}</p>}
     </div>
   );
 };

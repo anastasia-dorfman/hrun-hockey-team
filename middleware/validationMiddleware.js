@@ -387,8 +387,19 @@ export const validateUpdateUserInput = withValidationErrors([
             ERROR_MESSAGES.CHILD_NAME_TOO_SHORT(index + 1, "last name")
           );
         }
-        if (kid.dob && !isChild(parseAndValidateDate(kid.dob))) {
-          errors.push(ERROR_MESSAGES.INVALID_CHILD_DOB(index + 1));
+        if (kid.dob) {
+          try {
+            const parsedDate = parseAndValidateDate(kid.dob);
+            if (!isChild(parsedDate)) {
+              errors.push(ERROR_MESSAGES.INVALID_CHILD_DOB(index + 1));
+            }
+          } catch (error) {
+            errors.push(
+              `Invalid date format for child ${index + 1}: ${error.message}`
+            );
+          }
+        } else {
+          errors.push(`Date of birth is required for child ${index + 1}`);
         }
       });
 
@@ -432,134 +443,6 @@ export const validateUpdateUserInput = withValidationErrors([
     .isIn(userStatusOptions)
     .withMessage(ERROR_MESSAGES.INVALID_STATUS),
 ]);
-
-// export const validateUpdateUserInput = withValidationErrors([
-//   body("firstName").optional().notEmpty().withMessage("First name is required"),
-
-//   body("lastName").optional().notEmpty().withMessage("Last name is required"),
-
-//   body("dob")
-//     .optional()
-//     .custom((dob) => {
-//       if (!dob || dob === "") return true;
-//       const date = parseAndValidateDate(dob);
-//       if (!isAdult(date)) {
-//         throw new Error("You must be at least 18 years old\n");
-//       }
-//       return true;
-//     }),
-
-//   body("phone")
-//     .optional()
-//     .matches(/^\+?(\d{1,3})?[-.\s]?(\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4})$/)
-//     .withMessage("Phone number must be valid and in the format (123) 456-7890"),
-
-//   body("email")
-//     .optional()
-//     .isEmail()
-//     .withMessage("Invalid email format")
-//     .custom(async (email, { req }) => {
-//       const user = await User.findOne({ email });
-//       if (user && user.userId.toString() !== req.user.userId.toString()) {
-//         throw new Error("Email already exists");
-//       }
-//     }),
-
-//   body("address")
-//     .optional()
-//     .custom((address) => {
-//       if (!address) return true;
-
-//       const errors = [];
-
-//       if (address.streetAddress && address.streetAddress.length < 5) {
-//         errors.push("Street address must be at least 5 characters long");
-//       }
-//       if (address.city && address.city.length < 3) {
-//         errors.push("City must be at least 3 characters long");
-//       }
-//       if (address.province === "") {
-//         errors.push("Province is required");
-//       }
-//       if (address.postalCode) {
-//         const postalCodeRegex =
-//           /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i;
-//         if (!postalCodeRegex.test(address.postalCode)) {
-//           errors.push("Postal code is not valid");
-//         }
-//       }
-
-//       if (errors.length > 0) {
-//         throw new Error(errors.join("\n"));
-//       }
-
-//       return true;
-//     }),
-
-//   body("kids")
-//     .optional()
-//     .custom((kids) => {
-//       if (!kids || !Array.isArray(kids)) return true;
-
-//       const errors = [];
-
-//       kids.forEach((kid, index) => {
-//         if (kid.firstName && kid.firstName.length < 2) {
-//           errors.push(
-//             `Child ${index + 1}'s first name must be at least 2 characters long`
-//           );
-//         }
-//         if (kid.lastName && kid.lastName.length < 2) {
-//           errors.push(
-//             `Child ${index + 1}'s last name must be at least 2 characters long`
-//           );
-//         }
-//         if (kid.dob && !isChild(parseAndValidateDate(kid.dob))) {
-//           errors.push(`Child ${index + 1}'s date of birth is invalid`);
-//         }
-//       });
-
-//       if (errors.length > 0) {
-//         throw new Error(errors.join("\n"));
-//       }
-
-//       return true;
-//     }),
-
-//   body("language")
-//     // .notEmpty()
-//     // .withMessage("Language is required")
-//     .optional()
-//     .isIn(languageOptions)
-//     .withMessage("Invalid language option"),
-
-//   body("password")
-//     .optional()
-//     .isObject()
-//     .withMessage("Password must be an object")
-//     .custom((passwordObj) => {
-//       const { currentPassword, password, passwordConfirmation } = passwordObj;
-
-//       if (!currentPassword || !password || !passwordConfirmation) {
-//         throw new Error(
-//           "Current password, new password, and password confirmation are required"
-//         );
-//       }
-
-//       if (password !== passwordConfirmation) {
-//         throw new Error("Passwords do not match\n");
-//       }
-
-//       const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])/;
-//       if (!passwordRegex.test(password)) {
-//         throw new Error(
-//           "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-//         );
-//       }
-
-//       return true;
-//     }),
-// ]);
 
 export const validateLoginInput = withValidationErrors([
   body("email")

@@ -1,6 +1,6 @@
 import React from "react";
 import FormRow from "../FormRow";
-import { formatDate } from "../../utils/functions";
+import { parseAndValidateDate } from "../../utils/functions";
 
 const ChildForm = ({ child, onChange, errors }) => {
   const handleChange = (e) => {
@@ -8,7 +8,7 @@ const ChildForm = ({ child, onChange, errors }) => {
     onChange({ ...child, [name]: value });
   };
 
-  const formattedDob = child.dob ? formatDate(new Date(child.dob)) : "";
+  const formattedDob = child.dob ? parseAndValidateDate(child.dob) : "";
 
   return (
     <div className="child-form">
@@ -35,13 +35,13 @@ const ChildForm = ({ child, onChange, errors }) => {
       <FormRow
         type="date"
         name="dob"
-        placeholder="yyyy-mm-dd"
+        placeholder="DD-MM-YYYY"
         value={formattedDob}
         onChange={handleChange}
-        min={formatDate(
+        min={parseAndValidateDate(
           new Date(new Date().setFullYear(new Date().getFullYear() - 18))
         )}
-        max={formatDate(new Date())}
+        max={parseAndValidateDate(new Date())}
         error={errors.dob}
       />
     </div>

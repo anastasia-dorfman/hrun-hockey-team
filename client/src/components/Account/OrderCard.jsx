@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getFormattedDate } from "../../utils/functions";
+import { getDateString } from "../../utils/functions";
 
 const OrderCard = ({ order }) => {
   const countRegistrationsPerGroup = (registrations) => {
@@ -50,7 +50,7 @@ const OrderCard = ({ order }) => {
                   ))}
             </td>
             <td className="b3">${order.totalAmount}</td>
-            <td className="b3">{getFormattedDate(order.createdAt, false)}</td>
+            <td className="b3">{getDateString(order.createdAt, false)}</td>
             <td>
               <div className={`b3 status ${order.status.toLowerCase()}`}>
                 {order.status}

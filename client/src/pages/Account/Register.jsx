@@ -6,7 +6,7 @@ import { useAccountContext } from "../../pages/Account/AccountLayout";
 import { mockGroups } from "../../data/mockData";
 import showToast from "../../components/CustomToast";
 import Wrapper from "../../assets/wrappers/Account/Register";
-import { formatTime, getFormattedDate } from "../../utils/functions";
+import { formatTime, getDateString } from "../../utils/functions";
 import FormRow from "../../components/FormRow";
 
 // TODO get groups for particular kids???
@@ -172,8 +172,7 @@ const Register = () => {
                   <td className="days">
                     <div className="b2 days">{getSchedule(g.schedule)}</div>
                     <p className="b2 dates">
-                      {getFormattedDate(g.startDate)} -{" "}
-                      {getFormattedDate(g.endDate)}
+                      {getDateString(g.startDate)} - {getDateString(g.endDate)}
                     </p>
                   </td>
                   <td>${g.tuition}</td>
