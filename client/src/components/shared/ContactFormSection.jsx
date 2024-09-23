@@ -5,7 +5,7 @@ import Wrapper from "../../assets/wrappers/HomePageSections";
 import { useTeam } from "../../context/TeamContext";
 import FormRow from "./FormRow";
 
-const ContactFormSection = () => {
+const ContactFormSection = ({ page = "" }) => {
   const { teamName, address, phone, email } = useTeam();
   const [formData, setFormData] = useState({
     name: "",
@@ -25,7 +25,7 @@ const ContactFormSection = () => {
 
   return (
     <Wrapper>
-      <div className="home-page-section">
+      <div className={`home-page-section ${page}`}>
         <div className="form-section">
           <div className="form-info">
             <div className="content">

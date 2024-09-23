@@ -1,9 +1,9 @@
 import { createContext, useContext, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
-import AccountBigSidebar from "../../components/Account/AccountBigSidebar";
-import AccountTopbar from "../../components/Account/AccountTopbar";
-import Wrapper from "../../assets/wrappers/Account/AccountLayout";
+import AccountBigSidebar from "../../components/account/AccountBigSidebar";
+import AccountTopbar from "../../components/account/AccountTopbar";
+import Wrapper from "../../assets/wrappers/account/AccountLayout";
 
 const AccountContext = createContext();
 

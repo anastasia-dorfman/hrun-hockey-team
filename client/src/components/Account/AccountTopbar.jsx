@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import Wrapper from "../../assets/wrappers/Account/AccountTopbar";
-import { useAccountContext } from "../../pages/Account/AccountLayout";
+import Wrapper from "../../assets/wrappers/account/AccountTopbar";
+import { useAccountContext } from "../../pages/account/AccountLayout";
 
 const AccountTopbar = () => {
   const { user } = useAccountContext();

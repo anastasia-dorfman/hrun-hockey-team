@@ -6,7 +6,7 @@ import { mockGroups } from "../../data/mockData";
 import showToast from "../../components/shared/CustomToast";
 import FormRow from "../../components/shared/FormRow";
 import { formatTime, getDateString } from "../../utils/functions";
-import Wrapper from "../../assets/wrappers/Account/Register";
+import Wrapper from "../../assets/wrappers/account/Register";
 
 // TODO get groups for particular kids???
 const groups = mockGroups;

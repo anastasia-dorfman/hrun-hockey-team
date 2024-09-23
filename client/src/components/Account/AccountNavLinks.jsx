@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { accountPrimaryLinks, accountSecondaryLinks } from "../../utils/links";
 import { useUser } from "../../context/UserContext";
-import { useAccountContext } from "../../pages/Account/AccountLayout";
+import { useAccountContext } from "../../pages/account/AccountLayout";
 import showToast from "../shared/CustomToast";
 
 const NavLinks = ({ isBigSidebar }) => {

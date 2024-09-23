@@ -4,6 +4,11 @@ const Wrapper = styled.div`
   .home-page-section {
     padding: 2rem 4rem;
     text-align: left;
+
+    &.support {
+      padding: 0;
+      margin-top: 3rem;
+    }
   }
 
   .home-page-section .section-title {

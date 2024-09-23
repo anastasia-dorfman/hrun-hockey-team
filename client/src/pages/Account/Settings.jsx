@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useUser } from "../../context/UserContext";
-import ProfileCard from "../../components/Account/ProfileCard";
-import Wrapper from "../../assets/wrappers/Account/Settings";
+import ProfileCard from "../../components/account/ProfileCard";
+import Wrapper from "../../assets/wrappers/account/Settings";
 import customFetch from "../../utils/customFetch";
 import { languageOptions, USER_STATUSES } from "../../utils/clientConstants";
 import { toast } from "react-hot-toast";

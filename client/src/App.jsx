@@ -7,11 +7,11 @@ import News, { loader as newsLoader } from "./pages/News";
 import Team, { loader as coachesLoader } from "./pages/Team";
 import TeamHistory, { loader as milestonesLoader } from "./pages/TeamHistory";
 // import StatsLayout from "./components/StatsLayout";
-import StatsLayout from "./pages/Stats/StatsLayout";
-import Dashboard from "./pages/Stats/Dashboard";
-import StatsSummary from "./pages/Stats/StatsSummary";
-import StatsTeams from "./pages/Stats/StatsTeams";
-import StatsGlossary from "./pages/Stats/StatsGlossary";
+import StatsLayout from "./pages/stats/StatsLayout";
+import Dashboard from "./pages/stats/Dashboard";
+import StatsSummary from "./pages/stats/StatsSummary";
+import StatsTeams from "./pages/stats/StatsTeams";
+import StatsGlossary from "./pages/stats/StatsGlossary";
 import Shop, { loader as productsLoader } from "./pages/Shop";
 import ProductDetail, { loader as productLoader } from "./pages/ProductDetail";
 import Schedule, { loader as scheduleLoader } from "./pages/Schedule";
@@ -21,11 +21,12 @@ import Events from "./pages/Events";
 import Contact from "./pages/Contact";
 import CreateAccount, { action as createAccount } from "./pages/CreateAccount";
 import Login, { action as login } from "./pages/Login";
-import AccountLayout from "./pages/Account/AccountLayout"; // loader as userLoader,
-import Profile from "./pages/Account/Profile";
-import Register from "./pages/Account/Register";
-import MyOrders, { loader as ordersLoader } from "./pages/Account/MyOrders";
-import Settings from "./pages/Account/Settings";
+import AccountLayout from "./pages/account/AccountLayout"; // loader as userLoader,
+import Profile from "./pages/account/Profile";
+import Register from "./pages/account/Register";
+import MyOrders, { loader as ordersLoader } from "./pages/account/MyOrders";
+import Settings from "./pages/account/Settings";
+import Support from "./pages/account/Support";
 import Cart, { loader as cartLoader } from "./pages/Cart";
 import Tickets from "./pages/Tickets";
 import NotFound from "./pages/NotFound";
@@ -76,6 +77,7 @@ const router = createBrowserRouter([
           { path: "register", element: <Register /> },
           { path: "orders", element: <MyOrders />, loader: ordersLoader },
           { path: "settings", element: <Settings /> },
+          { path: "support", element: <Support /> },
         ],
       },
       { path: "cart", element: <Cart />, loader: cartLoader },
