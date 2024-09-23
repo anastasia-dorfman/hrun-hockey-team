@@ -1,6 +1,14 @@
 import "express-async-errors";
 import * as dotenv from "dotenv";
 dotenv.config();
+
+console.log("Loaded environment variables:", {
+  EMAIL_HOST: process.env.EMAIL_HOST,
+  EMAIL_PORT: process.env.EMAIL_PORT,
+  EMAIL_USER: process.env.EMAIL_USER,
+  NODE_ENV: process.env.NODE_ENV,
+});
+
 import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
@@ -15,6 +23,9 @@ import userRouter from "./routes/userRouter.js";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
 import { authenticateUser } from "./middleware/authMiddleware.js";
 
+//email Module
+import { sendEmail } from "./modules/emailModule.js";
+
 const app = express();
 
 app.use(cookieParser());
@@ -28,6 +39,28 @@ app.use("/api/products", productRouter);
 app.use("/api/news", newsRouter);
 app.use("/api/user", authenticateUser, userRouter);
 app.use("/api/auth", authRouter);
+// contact form route
+app.post("/api/contact", async (req, res) => {
+  try {
+    const { name, email, message } = req.body;
+
+    // You can customize the email content as needed
+    await sendEmail(
+      process.env.TEAM_EMAIL, // The email address where you want to receive contact form submissions
+      "New Contact Form Submission",
+      `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+      `<h1>New Contact Form Submission</h1>
+       <p><strong>Name:</strong> ${name}</p>
+       <p><strong>Email:</strong> ${email}</p>
+       <p><strong>Message:</strong> ${message}</p>`
+    );
+
+    res.status(200).json({ message: "Email sent successfully" });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({ message: "Failed to send email" });
+  }
+});
 
 app.use("*", (req, res) => {
   res.status(404).json({ msg: "not found" });
