@@ -4,6 +4,7 @@ dotenv.config();
 import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 //routers
 import productRouter from "./routes/productRouter.js";
@@ -16,6 +17,19 @@ import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
 import { authenticateUser } from "./middleware/authMiddleware.js";
 
 const app = express();
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://castors-tau.vercel.app",
+      "https://castors.netlify.app",
+      "https://stirring-peony-431279.netlify.app",
+    ], // Allow both local and production origins
+    credentials: true,
+    optionsSuccessStatus: 200,
+  })
+);
 
 app.use(cookieParser());
 app.use(express.json());
