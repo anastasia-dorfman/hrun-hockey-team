@@ -10,7 +10,8 @@ export const USER_STATUSES = {
 
 export const VALIDATION_PATTERNS = {
   PHONE: /^\+?(\d{1,3})?[-.\s]?(\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4})$/,
-  EMAIL: /^\S+@\S+\.\S+$/,
+  // EMAIL: /^\S+@\S+\.\S+$/,
+  EMAIL: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
   POSTAL_CODE:
     /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i,
   PASSWORD: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])/,
@@ -93,9 +94,9 @@ export const ERROR_MESSAGES = {
   CITY_TOO_SHORT: `City must be at least ${SCHEMA_CONSTRAINTS.CITY.MIN_LENGTH} characters long\n`,
   PROVINCE_REQUIRED: "Province is required\n",
   INVALID_POSTAL_CODE: "Postal code is not valid\n",
-  CHILD_NAME_TOO_SHORT: (index, field) =>
-    `Child ${index}'s ${field} must be at least ${SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH} characters long\n`,
-  INVALID_CHILD_DOB: (index) => `Child ${index}'s date of birth is invalid\n`,
+  CHILD_NAME_TOO_SHORT: (field) =>
+    `Child's ${field} must be at least ${SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH} characters long\n`,
+  INVALID_CHILD_DOB: `Child date of birth is invalid\n`,
   INVALID_LANGUAGE: "Invalid language option\n",
   PASSWORD_OBJECT_REQUIRED: "Password must be an object\n",
   PASSWORD_FIELDS_REQUIRED:

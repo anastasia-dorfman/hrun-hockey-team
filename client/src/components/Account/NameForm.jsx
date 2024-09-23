@@ -1,6 +1,6 @@
 import FormRow from "../FormRow";
 
-const NameForm = ({ fullName, onChange }) => {
+const NameForm = ({ fullName, onChange, errors }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     onChange({ ...fullName, [name]: value });
@@ -15,6 +15,7 @@ const NameForm = ({ fullName, onChange }) => {
           placeholder="First Name"
           value={fullName.firstName}
           onChange={handleChange}
+          error={errors.firstName}
         />
         <FormRow
           type="text"
@@ -22,6 +23,7 @@ const NameForm = ({ fullName, onChange }) => {
           placeholder="Last Name"
           value={fullName.lastName}
           onChange={handleChange}
+          error={errors.lastName}
         />
       </div>
     </div>

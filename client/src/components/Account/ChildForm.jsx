@@ -2,7 +2,7 @@ import React from "react";
 import FormRow from "../FormRow";
 import { formatDate } from "../../utils/functions";
 
-const ChildForm = ({ child, onChange }) => {
+const ChildForm = ({ child, onChange, errors }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     onChange({ ...child, [name]: value });
@@ -20,6 +20,7 @@ const ChildForm = ({ child, onChange }) => {
           placeholder="First name"
           value={child.firstName}
           onChange={handleChange}
+          error={errors.firstName}
         />
         <FormRow
           type="text"
@@ -27,6 +28,7 @@ const ChildForm = ({ child, onChange }) => {
           placeholder="Last name"
           value={child.lastName}
           onChange={handleChange}
+          error={errors.lastName}
         />
       </div>
       <h4 className="child-dob">Date of birth:</h4>
@@ -40,6 +42,7 @@ const ChildForm = ({ child, onChange }) => {
           new Date(new Date().setFullYear(new Date().getFullYear() - 18))
         )}
         max={formatDate(new Date())}
+        error={errors.dob}
       />
     </div>
   );

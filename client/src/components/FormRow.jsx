@@ -18,6 +18,7 @@ const FormRow = ({
   min,
   max,
   className = "",
+  error = "",
 }) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
 
@@ -166,6 +167,7 @@ const FormRow = ({
             {renderLabel()}
           </label>
         )}
+        {error && <p className="error-message b5">{error}</p>}
       </div>
     </div>
   );

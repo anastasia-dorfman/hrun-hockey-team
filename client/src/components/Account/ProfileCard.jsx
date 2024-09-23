@@ -4,12 +4,12 @@ import AddressForm from "./AddressForm";
 import ChildForm from "./ChildForm";
 import NameForm from "./NameForm";
 import PasswordForm from "./PasswordForm";
+import { formatDate, isAdult, isChild } from "../../utils/functions";
 import {
-  formatDate,
-  isAdult,
-  isChild,
-  parseAndValidateDate,
-} from "../../utils/functions";
+  VALIDATION_PATTERNS,
+  ERROR_MESSAGES,
+  SCHEMA_CONSTRAINTS,
+} from "../../utils/clientConstants";
 import showToast from "../CustomToast";
 
 const ProfileCard = ({
@@ -24,62 +24,102 @@ const ProfileCard = ({
   handleDeleteAction,
   isEditingMode = false,
 }) => {
-  // const [isEditing, setIsEditing] = useState(name === "kids" ? {} : false);
   const [isEditing, setIsEditing] = useState(isEditingMode);
   const [isFormDataValid, setIsFormDataValid] = useState(false);
   const [editedValue, setEditedValue] = useState(
     name === "kids" || name === "password" ? {} : value
   );
-
-  const isAddressValid = (address) => {
-    const postalCodeRegex =
-      /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i;
-    return (
-      address.streetAddress.length >= 5 &&
-      address.city.length >= 3 &&
-      address.province &&
-      address.postalCode &&
-      postalCodeRegex.test(address.postalCode)
-    );
-  };
+  const [errors, setErrors] = useState({});
 
   const validateFormData = (newValue) => {
-    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    const phoneRegex =
-      /^\+?(\d{1,3})?[-.\s]?(\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4})$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])/;
+    const emailRegex = VALIDATION_PATTERNS.EMAIL;
+    const phoneRegex = VALIDATION_PATTERNS.PHONE;
+    const passwordRegex = VALIDATION_PATTERNS.PASSWORD;
+    const newErrors = {};
 
-    const isValid =
-      (name === "address" && isAddressValid(newValue)) ||
-      (name === "addChild" &&
-        newValue.firstName.length >= 2 &&
-        newValue.lastName.length >= 2 &&
-        newValue.dob &&
-        isChild(newValue.dob)) ||
-      (name === "kids" &&
-        newValue.firstName.length >= 2 &&
-        newValue.lastName.length >= 2 &&
-        newValue.dob &&
-        isChild(newValue.dob)) ||
-      (name === "fullName" &&
-        newValue.firstName.length >= 2 &&
-        newValue.lastName.length >= 2) ||
-      (name === "dob" && isAdult(newValue)) ||
-      (name === "email" && emailRegex.test(newValue)) ||
-      (name === "phone" &&
-        phoneRegex.test(
-          newValue
-            .replace(/\s/g, "")
-            .replace(/-/g, "")
-            .replace(/\(/g, "")
-            .replace(/\)/g, "")
-        )) ||
-      (name === "password" &&
-        passwordRegex.test(newValue.password) &&
-        newValue.password === newValue.passwordConfirmation) ||
-      (name === "email" && emailRegex.test(newValue)) ||
-      (name === "language" && newValue !== "");
+    switch (name) {
+      case "address":
+        if (
+          newValue.streetAddress.length <
+          SCHEMA_CONSTRAINTS.STREET_ADDRESS.MIN_LENGTH
+        ) {
+          newErrors.streetAddress = ERROR_MESSAGES.STREET_ADDRESS_TOO_SHORT;
+        }
+        if (newValue.city.length < SCHEMA_CONSTRAINTS.CITY.MIN_LENGTH) {
+          newErrors.city = ERROR_MESSAGES.CITY_TOO_SHORT;
+        }
+        if (!newValue.province) {
+          newErrors.province = ERROR_MESSAGES.PROVINCE_REQUIRED;
+        }
+        if (
+          !newValue.postalCode ||
+          !VALIDATION_PATTERNS.POSTAL_CODE.test(newValue.postalCode)
+        ) {
+          newErrors.postalCode = ERROR_MESSAGES.INVALID_POSTAL_CODE;
+        }
+        break;
+      case "addChild":
+      case "kids":
+        if (newValue.firstName.length < SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH) {
+          newErrors.firstName =
+            ERROR_MESSAGES.CHILD_NAME_TOO_SHORT("first name");
+        }
+        if (newValue.lastName.length < SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH) {
+          newErrors.lastName = ERROR_MESSAGES.CHILD_NAME_TOO_SHORT("last name");
+        }
+        if (!newValue.dob || !isChild(newValue.dob)) {
+          newErrors.dob = ERROR_MESSAGES.CHILD_AGE_REQUIRED;
+        }
+        break;
+      case "fullName":
+        if (newValue.firstName.length < SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH) {
+          newErrors.firstName = ERROR_MESSAGES.NAME_TOO_SHORT("First name");
+        }
+        if (newValue.lastName.length < SCHEMA_CONSTRAINTS.NAME.MIN_LENGTH) {
+          newErrors.lastName = ERROR_MESSAGES.NAME_TOO_SHORT("Last name");
+        }
+        break;
+      case "dob":
+        if (!isAdult(newValue)) {
+          newErrors.dob = ERROR_MESSAGES.ADULT_AGE_REQUIRED;
+        }
+        break;
+      case "email":
+        if (!emailRegex.test(newValue)) {
+          newErrors.email = ERROR_MESSAGES.INVALID_EMAIL_FORMAT;
+        }
+        break;
+      case "phone":
+        if (
+          !phoneRegex.test(
+            newValue
+              .replace(/\s/g, "")
+              .replace(/-/g, "")
+              .replace(/\(/g, "")
+              .replace(/\)/g, "")
+          )
+        ) {
+          newErrors.phone = ERROR_MESSAGES.INVALID_PHONE_FORMAT;
+        }
+        break;
+      case "password":
+        if (!passwordRegex.test(newValue.password)) {
+          newErrors.password = ERROR_MESSAGES.INVALID_PASSWORD_FORMAT;
+        }
+        if (newValue.password !== newValue.passwordConfirmation) {
+          newErrors.passwordConfirmation =
+            ERROR_MESSAGES.PASSWORDS_DO_NOT_MATCH;
+        }
+        break;
+      case "language":
+        if (newValue === "") {
+          newErrors.language = ERROR_MESSAGES.INVALID_LANGUAGE;
+        }
+        break;
+    }
 
+    setErrors(newErrors);
+    const isValid = Object.keys(newErrors).length === 0;
     setIsFormDataValid(isValid);
     return isValid;
   };
@@ -163,34 +203,50 @@ const ProfileCard = ({
 
   const renderEditContent = (kid = null) => {
     if (name === "address")
-      return <AddressForm address={editedValue} onChange={handleFormChange} />;
+      return (
+        <AddressForm
+          address={editedValue}
+          onChange={handleFormChange}
+          errors={errors}
+        />
+      );
 
     if (name === "kids" && kid) {
       return (
         <ChildForm
           child={editedValue[kid.kidId] || kid}
           onChange={(data) => handleFormChange(data, kid.kidId)}
+          errors={errors}
         />
       );
     }
 
     if (name === "addChild")
-      return <ChildForm child={editedValue} onChange={handleFormChange} />;
+      return (
+        <ChildForm
+          child={editedValue}
+          onChange={handleFormChange}
+          errors={errors}
+        />
+      );
 
     if (name === "fullName")
-      return <NameForm fullName={editedValue} onChange={handleFormChange} />;
+      return (
+        <NameForm
+          fullName={editedValue}
+          onChange={handleFormChange}
+          errors={errors}
+        />
+      );
 
     if (name === "password")
       return (
         <PasswordForm
           passwordObject={editedValue}
           onChange={handleFormChange}
+          errors={errors}
         />
       );
-
-    if (name === "language") {
-      console.log("languages:", options);
-    }
 
     return (
       <FormRow
@@ -200,12 +256,12 @@ const ProfileCard = ({
         options={options.map((o) => ({ value: o, label: o }))}
         onChange={handleChange}
         isLabeled={false}
-        //TODO minus day doesnt work, bug in valudating day
         max={formatDate(
           new Date(
             new Date().setFullYear(new Date().getFullYear() - 18) - 86400000
           )
         )}
+        error={errors[name]}
       />
     );
   };

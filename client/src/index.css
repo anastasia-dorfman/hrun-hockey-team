@@ -622,6 +622,12 @@ textarea::placeholder {
   }
 }
 
+.error-message {
+  color: var(--error);
+  margin-top: 0.2rem;
+  padding: 0.2rem 0 0 0.2rem;
+}
+
 @media (max-width: 1343px) {
   main {
     padding-top: 6rem;

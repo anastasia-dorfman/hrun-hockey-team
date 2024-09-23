@@ -120,11 +120,6 @@ const Wrapper = styled.div`
       }
     }
 
-    .error-message {
-      color: var(--error);
-      margin-top: 0.25rem;
-    }
-
     button {
       margin-top: 3rem;
       margin-bottom: 1rem;

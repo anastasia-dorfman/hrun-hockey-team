@@ -1,6 +1,6 @@
 import FormRow from "../FormRow";
 
-const PasswordForm = ({ passwordObject, onChange }) => {
+const PasswordForm = ({ passwordObject, onChange, errors }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     onChange({
@@ -25,6 +25,7 @@ const PasswordForm = ({ passwordObject, onChange }) => {
           placeholder="New Password"
           value={passwordObject.password || ""}
           onChange={handleChange}
+          error={errors.password}
         />
         <FormRow
           type="password"
@@ -32,6 +33,7 @@ const PasswordForm = ({ passwordObject, onChange }) => {
           placeholder="Confirm Password"
           value={passwordObject.passwordConfirmation || ""}
           onChange={handleChange}
+          error={errors.passwordConfirmation}
         />
       </div>
     </div>

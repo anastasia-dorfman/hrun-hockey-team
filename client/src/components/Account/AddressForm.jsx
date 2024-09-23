@@ -22,7 +22,7 @@ const countries = [
   { value: "United States", label: "United States" },
 ];
 
-const AddressForm = ({ address, onChange }) => {
+const AddressForm = ({ address, onChange, errors }) => {
   const [selectedCountry, setSelectedCountry] = useState(address.country || "");
 
   const handleChange = (e) => {
@@ -47,6 +47,7 @@ const AddressForm = ({ address, onChange }) => {
         options={countries}
         isPlaceholder={true}
         placeholder="Country/Region"
+        error={errors.country}
       />
       <div className="form-row-inline">
         <FormRow
@@ -55,6 +56,7 @@ const AddressForm = ({ address, onChange }) => {
           placeholder="Street Address"
           value={address.streetAddress}
           onChange={handleChange}
+          error={errors.streetAddress}
         />
         <FormRow
           type="text"
@@ -72,6 +74,7 @@ const AddressForm = ({ address, onChange }) => {
           labelText="City"
           value={address.city}
           onChange={handleChange}
+          error={errors.city}
         />
         <FormRow
           type="select"
@@ -83,6 +86,7 @@ const AddressForm = ({ address, onChange }) => {
             value: province,
             label: province,
           }))}
+          error={errors.province}
         />
         <FormRow
           type="text"
@@ -90,6 +94,7 @@ const AddressForm = ({ address, onChange }) => {
           placeholder="Postal Code"
           value={address.postalCode}
           onChange={handleChange}
+          error={errors.postalCode}
         />
       </div>
     </div>

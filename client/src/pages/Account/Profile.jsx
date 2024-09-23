@@ -3,35 +3,40 @@ import { useAccountContext } from "./AccountLayout";
 import { useUser } from "../../context/UserContext";
 import ProfileCard from "../../components/Account/ProfileCard";
 import Wrapper from "../../assets/wrappers/Account/Profile";
-import { formatDate } from "../../utils/functions";
+import { formatDate, getFormattedDate } from "../../utils/functions";
 import customFetch from "../../utils/customFetch";
 import { toast } from "react-hot-toast";
 
 const Profile = () => {
   const { user, updateUser } = useUser();
-
-  if (!user) {
-    return <div>Loading user data...</div>;
-  }
-
+  const [profileData, setProfileData] = useState(null);
   const [showChildForm, setShowChildForm] = useState(false);
   const [isAddingChild, setIsAddingChild] = useState(false);
-  const [profileData, setProfileData] = useState({
-    firstName: user.firstName,
-    lastName: user.lastName,
-    dob: user.dob ? formatDate(new Date(user.dob)) : "",
-    email: user.email,
-    phone: user.phone || "",
-    address: user.address || {
-      country: "Canada",
-      streetAddress: "",
-      apt: "",
-      city: "",
-      province: "New Brunswick",
-      postalCode: "",
-    },
-    kids: user.kids || [],
-  });
+
+  useEffect(() => {
+    if (user) {
+      setProfileData({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        dob: user.dob ? getFormattedDate(new Date(user.dob), false) : "",
+        email: user.email,
+        phone: user.phone || "",
+        address: user.address || {
+          country: "Canada",
+          streetAddress: "",
+          apt: "",
+          city: "",
+          province: "New Brunswick",
+          postalCode: "",
+        },
+        kids: user.kids || [],
+      });
+    }
+  }, [user]);
+
+  if (!user || !profileData) {
+    return <div>Loading user data...</div>;
+  }
 
   const handleEditSubmit = async (name, value) => {
     try {
@@ -62,22 +67,22 @@ const Profile = () => {
 
       updateUser(updatedUser);
 
-      setProfileData((prevData) => {
-        if (name === "fullName") {
-          return {
-            ...prevData,
-            firstName: value.firstName,
-            lastName: value.lastName,
-          };
-        } else if (name === "addChild" || name === "kids") {
-          return {
-            ...prevData,
-            kids: updatedUser.kids,
-          };
-        } else {
-          return { ...prevData, [name]: value };
-        }
-      });
+      // setProfileData((prevData) => {
+      //   if (name === "fullName") {
+      //     return {
+      //       ...prevData,
+      //       firstName: value.firstName,
+      //       lastName: value.lastName,
+      //     };
+      //   } else if (name === "addChild" || name === "kids") {
+      //     return {
+      //       ...prevData,
+      //       kids: updatedUser.kids,
+      //     };
+      //   } else {
+      //     return { ...prevData, [name]: value };
+      //   }
+      // });
 
       toast.success("Profile updated successfully");
 
