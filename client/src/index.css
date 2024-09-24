@@ -553,6 +553,15 @@ textarea::placeholder {
   color: var(--text-secondary);
 }
 
+#contact-us-section {
+  scroll-margin-top: 8rem;
+  padding-top: 2rem;
+
+  @media (max-width: 1200px) {
+    scroll-margin-top: 6rem;
+  }
+}
+
 .info-card {
   /* flex: 1 1 100%; */
   width: 100%;
