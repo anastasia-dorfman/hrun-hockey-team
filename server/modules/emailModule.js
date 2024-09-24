@@ -12,12 +12,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-console.log("Email configuration:", {
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
-  user: process.env.EMAIL_USER,
-});
-
 export const sendEmail = async (to, subject, text, html) => {
   try {
     const info = await transporter.sendMail({
