@@ -135,7 +135,6 @@ const ContactFormSection = ({ page = "" }) => {
               name="email"
               isRequired={false}
               value={formData.email}
-              isRequired={false}
               onChange={handleInputChange}
               error={errors.email}
             />
@@ -148,7 +147,6 @@ const ContactFormSection = ({ page = "" }) => {
               labelText="How we can help you?"
               isPlaceholder={false}
               value={formData.message}
-              isRequired={false}
               onChange={handleInputChange}
               error={errors.message}
             />
@@ -159,7 +157,6 @@ const ContactFormSection = ({ page = "" }) => {
               isLabeled
               labelText="I agree that my data can be collected and stored."
               value={formData.agreeWithDataCollection}
-              isRequired={false}
               onChange={handleInputChange}
               error={errors.agreeWithDataCollection}
             />
