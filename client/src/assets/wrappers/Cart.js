@@ -106,7 +106,7 @@ const Wrapper = styled.div`
               input {
                 width: 100%;
                 box-sizing: border-box;
-                color: var(--color-b40-b60);
+                color: var(--text-secondary);
                 background-color: #fff;
                 border: 1px solid var(--black-40);
                 /* box-shadow: var(--shadow); */

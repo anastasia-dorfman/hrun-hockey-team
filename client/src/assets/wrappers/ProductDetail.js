@@ -230,11 +230,7 @@ const Wrapper = styled.div`
           width: 5rem;
           text-align: center;
           border: none;
-          /* border-left: 1px solid var(--text-secondary-color);
-    border-right: 1px solid var(--text-secondary-color); */
           padding: 0.8rem 1rem;
-          /* -moz-appearance: textfield; */
-
           &::-webkit-outer-spin-button,
           &::-webkit-inner-spin-button {
             -webkit-appearance: none;

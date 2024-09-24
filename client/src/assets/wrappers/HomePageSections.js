@@ -196,6 +196,7 @@ const Wrapper = styled.div`
 
         .form-input-container {
           width: 100%;
+          color: var(--text-secondary);
 
           &.checkbox {
             display: flex;
@@ -261,7 +262,7 @@ const Wrapper = styled.div`
 
           input,
           textarea {
-            color: var(--color-b40-b60);
+            color: var(--text-secondary);
             background-color: var(--color-w-gb);
             border: 1px solid var(--black-20);
             box-shadow: var(--shadow);
