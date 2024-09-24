@@ -622,7 +622,18 @@ textarea::placeholder {
   }
 }
 
+.form-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-input-container,
+.password-wrapper {
+  width: 100%;
+}
+
 .error-message {
+  width: 100%;
   color: var(--error);
   margin-top: 0.2rem;
   padding: 0.2rem 0 0 0.2rem;

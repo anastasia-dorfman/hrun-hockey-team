@@ -108,7 +108,10 @@ const ProfileCard = ({
         }
         break;
       case "password":
-        if (!passwordRegex.test(newValue.password)) {
+        if (
+          newValue.password !== undefined &&
+          !passwordRegex.test(newValue.password)
+        ) {
           newErrors.password = ERROR_MESSAGES.INVALID_PASSWORD_FORMAT;
         }
         if (newValue.password !== newValue.passwordConfirmation) {
@@ -124,6 +127,10 @@ const ProfileCard = ({
     }
 
     setErrors(newErrors);
+    console.log("newErrors", newErrors);
+    console.log("value.password empty", value.password !== "");
+    console.log("Value", value);
+    console.log("newValue.password", newValue.password);
     const isValid = Object.keys(newErrors).length === 0;
     setIsFormDataValid(isValid);
     return isValid;
