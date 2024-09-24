@@ -33,7 +33,6 @@ export default function Footer() {
                   <Link to="/school">Hockey School</Link>
                   <Link to="/events">Events</Link>
                   <Link to="/schedule">Schedule</Link>
-                  {/* <Link to="/#contact-us-section">Contact us</Link> */}
                   <HashLink smooth to="/#contact-us-section">
                     Contact Us
                   </HashLink>

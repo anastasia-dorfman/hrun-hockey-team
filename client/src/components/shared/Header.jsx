@@ -105,13 +105,6 @@ const Header = ({ isHomePage }) => {
         >
           Events
         </NavLink>
-        {/* <NavLink
-          to="/contact"
-          className={({ isActive }) => (isActive ? "active-link" : "")}
-          onClick={closeMenu}
-        >
-          Contact us
-        </NavLink> */}
         <HashLink
           smooth
           to="/#contact-us-section"
