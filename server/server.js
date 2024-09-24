@@ -44,9 +44,8 @@ app.post("/api/contact", async (req, res) => {
   try {
     const { name, email, message } = req.body;
 
-    // You can customize the email content as needed
     await sendEmail(
-      process.env.TEAM_EMAIL, // The email address where you want to receive contact form submissions
+      process.env.TEAM_EMAIL,
       "New Contact Form Submission",
       `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
       `<h1>New Contact Form Submission</h1>
