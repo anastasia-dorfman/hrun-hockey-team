@@ -133,6 +133,7 @@ const ContactFormSection = ({ page = "" }) => {
             <FormRow
               type="email"
               name="email"
+              isRequired={false}
               value={formData.email}
               isRequired={false}
               onChange={handleInputChange}
@@ -142,6 +143,7 @@ const ContactFormSection = ({ page = "" }) => {
               type="textarea"
               name="message"
               isLabeled={true}
+              isRequired={false}
               labelIcon={<LuPen />}
               labelText="How we can help you?"
               isPlaceholder={false}
@@ -153,6 +155,7 @@ const ContactFormSection = ({ page = "" }) => {
             <FormRow
               type="checkbox"
               name="agreeWithDataCollection"
+              isRequired={false}
               isLabeled
               labelText="I agree that my data can be collected and stored."
               value={formData.agreeWithDataCollection}
