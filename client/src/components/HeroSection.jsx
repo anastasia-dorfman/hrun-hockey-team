@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import Socials from "./shared/Socials";
 import Wrapper from "../assets/wrappers/HeroSection";
@@ -22,7 +23,9 @@ const HeroSection = () => {
             Be the first to know about upcoming events and never miss out on the
             excitement. Click below to buy your tickets today!
           </p>
-          <button className="buy-ticket selected b2">Buy A Ticket</button>
+          <button className="buy-ticket selected b2">
+            <Link to="/events">Buy A Ticket</Link>
+          </button>
         </div>
       </div>
     </Wrapper>

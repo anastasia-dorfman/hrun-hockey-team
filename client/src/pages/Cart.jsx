@@ -143,6 +143,7 @@ const Cart = () => {
                     <GoTag /> Add promo code
                   </>
                 }
+                isRequired={false}
               />
               <button onClick={applyPromoCode}>Apply</button>
             </div>

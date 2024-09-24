@@ -4,7 +4,7 @@ const Wrapper = styled.div`
   .calendar-day {
     aspect-ratio: 1/1;
     background-color: var(--color-bl-odg);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-lg);
     padding: 1rem;
     display: flex;
     flex-direction: column;

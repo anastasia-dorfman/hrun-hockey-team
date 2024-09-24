@@ -1,16 +1,15 @@
 import React from "react";
 import Wrapper from "../assets/wrappers/UpdateCard";
+import { HOCKEY_TEAMS_LOGOS } from "../utils/clientConstants";
 
 const UpdateCard = ({
   id,
   title,
-  league1,
-  league1Img,
-  league2,
-  league2Img,
+  team1,
+  team2,
   date,
-  league1Score,
-  league2Score,
+  team1Score,
+  team2Score,
 }) => {
   return (
     <Wrapper to={`#`}>
@@ -20,15 +19,15 @@ const UpdateCard = ({
       </div>
       <div className="update-results">
         <div className="league">
-          <img src={league1Img} alt={league1} />
-          <h4>{league1}</h4>
+          <img src={HOCKEY_TEAMS_LOGOS[team1]} alt={team1} />
+          <h4>{team1}</h4>
         </div>
         <h4>
-          {league1Score} - {league2Score}
+          {team1Score} - {team2Score}
         </h4>
         <div className="league">
-          <img src={league2Img} alt={league2} />
-          <h4>{league2}</h4>
+          <img src={HOCKEY_TEAMS_LOGOS[team2]} alt={team2} />
+          <h4>{team2}</h4>
         </div>
       </div>
     </Wrapper>

@@ -25,7 +25,7 @@ const Wrapper = styled.aside`
     background: var(--background-secondary-color);
     width: var(--fluid-width);
     height: 95vh;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-lg);
     padding: 4rem 2rem;
     position: relative;
     display: flex;
