@@ -1,7 +1,7 @@
 import { useLoaderData } from "react-router-dom";
-import OrderCard from "../../components/account/OrderCard";
-import Wrapper from "../../assets/wrappers/account/MyOrders";
-import customFetch from "../../utils/customFetch";
+import OrderCard from "../../components/account/OrderCard.jsx";
+import Wrapper from "../../assets/wrappers/account/MyOrders.js";
+import customFetch from "../../utils/customFetch.js";
 // import { shouldUseMockData } from "../../utils/environment";
 import { mockOrders } from "../../data/mockData.js";
 

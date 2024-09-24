@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { LuPhone, LuMail, LuPen } from "react-icons/lu";
 import { useTeam } from "../../context/TeamContext";
 import {
@@ -12,6 +12,8 @@ import Wrapper from "../../assets/wrappers/HomePageSections";
 
 const ContactFormSection = ({ page = "" }) => {
   const { teamName, address, phone, email } = useTeam();
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -19,8 +21,6 @@ const ContactFormSection = ({ page = "" }) => {
     message: "",
     agreeWithDataCollection: false,
   });
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -81,14 +81,11 @@ const ContactFormSection = ({ page = "" }) => {
           });
           toast.success("Message sent successfully!");
         } else {
-          throw new Error("Failed to send message");
+          toast.error("Failed to send message");
         }
       } catch (error) {
         console.error("Error sending email:", error);
-        toast.error(
-          error.response?.data?.msg ||
-            "Failed to send message. Please try again later."
-        );
+        alert("Failed to send message. Please try again later.");
       } finally {
         setIsSubmitting(false);
       }
@@ -117,7 +114,6 @@ const ContactFormSection = ({ page = "" }) => {
               </p>
             </div>
           </div>
-
           <form className="form" onSubmit={handleSubmit}>
             <FormRow
               type="text"
@@ -130,8 +126,8 @@ const ContactFormSection = ({ page = "" }) => {
             <FormRow
               type="text"
               name="phone"
-              isRequired={false}
               value={formData.phone}
+              isRequired={false}
               onChange={handleInputChange}
             />
             <FormRow
@@ -139,6 +135,7 @@ const ContactFormSection = ({ page = "" }) => {
               name="email"
               isRequired={false}
               value={formData.email}
+              isRequired={false}
               onChange={handleInputChange}
               error={errors.email}
             />
@@ -148,10 +145,10 @@ const ContactFormSection = ({ page = "" }) => {
               isLabeled={true}
               isRequired={false}
               labelIcon={<LuPen />}
-              // labelText="How can our team help you?"
               labelText="How we can help you?"
               isPlaceholder={false}
               value={formData.message}
+              isRequired={false}
               onChange={handleInputChange}
               error={errors.message}
             />
@@ -162,13 +159,13 @@ const ContactFormSection = ({ page = "" }) => {
               isLabeled
               labelText="I agree that my data can be collected and stored."
               value={formData.agreeWithDataCollection}
+              isRequired={false}
               onChange={handleInputChange}
               error={errors.agreeWithDataCollection}
             />
 
             <button type="submit" className="selected long b2 contact-us-btn">
               Contact us
-              {/* Get in touch */}
             </button>
           </form>
         </div>

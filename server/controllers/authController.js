@@ -49,6 +49,7 @@ export const login = async (req, res) => {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
     secure: process.env.NODE_ENV === "production",
+    sameSite: "None",
   });
 
   res.status(StatusCodes.CREATED).json({ msg: "user logged in" });

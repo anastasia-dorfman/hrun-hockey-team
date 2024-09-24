@@ -18,7 +18,7 @@ const PasswordForm = ({ passwordObject, onChange, errors }) => {
         value={passwordObject.currentPassword || ""}
         onChange={handleChange}
       />
-      <div className="form-row-inline name">
+      <div className="form-row-inline">
         <FormRow
           type="password"
           name="password"

@@ -35,6 +35,7 @@ export const action = async ({ request }) => {
   }
 
   try {
+    console.log("Login URL:", `${import.meta.env.VITE_API_URL}/auth/login`);
     const loginResponse = await customFetch.post("/auth/login", loginData);
 
     if (loginResponse.data.isDeleted) {
@@ -49,6 +50,8 @@ export const action = async ({ request }) => {
     const userData = await customFetch.get("/user");
     return { success: true, user: userData.data.user };
   } catch (error) {
+    console.error("Login error:", error.response || error);
+
     let errorMessage = "";
 
     if (error?.response?.data?.errors) {

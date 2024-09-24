@@ -7,6 +7,10 @@ const Wrapper = styled.div`
   justify-content: start;
   width: 100%;
 
+  .password-form {
+    max-width: 600px;
+  }
+
   form {
     width: 100%;
 
