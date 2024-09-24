@@ -4,13 +4,13 @@ import Wrapper from "../assets/wrappers/UpdateCard";
 const UpdateCard = ({
   id,
   title,
-  league1,
-  league1Img,
-  league2,
-  league2Img,
+  team1,
+  team1Logo,
+  team2,
+  team2Logo,
   date,
-  league1Score,
-  league2Score,
+  team1Score,
+  team2Score,
 }) => {
   return (
     <Wrapper to={`#`}>
@@ -20,15 +20,15 @@ const UpdateCard = ({
       </div>
       <div className="update-results">
         <div className="league">
-          <img src={league1Img} alt={league1} />
-          <h4>{league1}</h4>
+          <img src={team1Logo} alt={team1} />
+          <h4>{team1}</h4>
         </div>
         <h4>
-          {league1Score} - {league2Score}
+          {team1Score} - {team2Score}
         </h4>
         <div className="league">
-          <img src={league2Img} alt={league2} />
-          <h4>{league2}</h4>
+          <img src={team2Logo} alt={team2} />
+          <h4>{team2}</h4>
         </div>
       </div>
     </Wrapper>

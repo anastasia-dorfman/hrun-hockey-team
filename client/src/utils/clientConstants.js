@@ -147,6 +147,18 @@ export const WEEKDAYS = {
   SUNDAY: "Sunday",
 };
 
+export const HOCKEY_TEAMS = {
+  BB: "Boston Bruins",
+  SK: "Saskatoon Blades",
+  Kings: "Los Angeles Kings",
+  NFL: "Newfoundlands",
+  FL: "Florida Panthers",
+  DS: "Dallas Stars",
+  TBL: "Tampa Bay Lightning",
+  TL: "Toronto Maple Leafs",
+  NHL: "National Hockey League",
+};
+
 export const GAME_TYPE = {
   REGULAR: "Regular Season",
   PLAYOFF: "Playoffs",
