@@ -18,48 +18,18 @@ import { authenticateUser } from "./middleware/authMiddleware.js";
 
 const app = express();
 
-// app.use(
-//   cors({
-//     origin: [
-//       "http://localhost:5173",
-//       "https://castors-tau.vercel.app",
-//       "https://castors.netlify.app",
-//       "https://stirring-peony-431279.netlify.app",
-//     ], // Allow both local and production origins
-//     credentials: true,
-//     optionsSuccessStatus: 200,
-//   })
-// );
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    const allowedOrigins = [
+app.use(
+  cors({
+    origin: [
       "http://localhost:5173",
       "https://castors-tau.vercel.app",
       "https://castors.netlify.app",
       "https://stirring-peony-431279.netlify.app",
-    ];
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("CORS not allowed"));
-    }
-  },
-  credentials: true,
-  optionsSuccessStatus: 200,
-};
-
-app.use(cors(corsOptions));
-
-// Logging middleware
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-  console.log("Origin:", req.headers.origin);
-  next();
-});
-
-// Handle OPTIONS requests explicitly
-app.options("*", cors(corsOptions));
+    ], // Allow both local and production origins
+    credentials: true,
+    optionsSuccessStatus: 200,
+  })
+);
 
 app.use(cookieParser());
 app.use(express.json());
@@ -80,13 +50,6 @@ app.use("*", (req, res) => {
 app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 5101;
-
-///////////////////////////////////////////////////////////
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
-});
-///////////////////////////////////////////////////////////
 
 try {
   await mongoose.connect(process.env.MONGO_URL);
