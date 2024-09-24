@@ -1,13 +1,12 @@
 import React from "react";
 import Wrapper from "../assets/wrappers/UpdateCard";
+import { HOCKEY_TEAMS_LOGOS } from "../utils/clientConstants";
 
 const UpdateCard = ({
   id,
   title,
   team1,
-  team1Logo,
   team2,
-  team2Logo,
   date,
   team1Score,
   team2Score,
@@ -20,14 +19,14 @@ const UpdateCard = ({
       </div>
       <div className="update-results">
         <div className="league">
-          <img src={team1Logo} alt={team1} />
+          <img src={HOCKEY_TEAMS_LOGOS[team1]} alt={team1} />
           <h4>{team1}</h4>
         </div>
         <h4>
           {team1Score} - {team2Score}
         </h4>
         <div className="league">
-          <img src={team2Logo} alt={team2} />
+          <img src={HOCKEY_TEAMS_LOGOS[team2]} alt={team2} />
           <h4>{team2}</h4>
         </div>
       </div>

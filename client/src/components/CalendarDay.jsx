@@ -2,10 +2,11 @@ import React from "react";
 import { format, isSameMonth, isSameDay } from "date-fns";
 import { Link } from "react-router-dom";
 import Wrapper from "../assets/wrappers/CalendarDay";
+import { HOCKEY_TEAMS_LOGOS } from "../utils/clientConstants";
 
 const CalendarDay = ({ day, currentDate, games }) => {
   const getGamesForDay = (day) => {
-    return games.filter((game) => isSameDay(new Date(game.datetime), day));
+    return games.filter((game) => isSameDay(new Date(game.dateTime), day));
   };
 
   const dayGames = getGamesForDay(day);
@@ -30,13 +31,13 @@ const CalendarDay = ({ day, currentDate, games }) => {
             <div className="game">
               <div className="b3 game-teams-logo">
                 <img
-                  src={game.team1Logo}
+                  src={HOCKEY_TEAMS_LOGOS[game.team1]}
                   alt={game.team1}
                   className="team-logo"
                 />
                 <span>@</span>
                 <img
-                  src={game.team2Logo}
+                  src={HOCKEY_TEAMS_LOGOS[game.team2]}
                   alt={game.team2}
                   className="team-logo"
                 />
@@ -45,7 +46,7 @@ const CalendarDay = ({ day, currentDate, games }) => {
                 {game.team1} @ {game.team2}
               </div>
               <div className="b3 game-time">
-                {format(new Date(game.datetime), "hh:mm a")}
+                {format(new Date(game.dateTime), "hh:mm a")}
               </div>
             </div>
           </Link>

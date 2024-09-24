@@ -150,13 +150,26 @@ export const WEEKDAYS = {
 export const HOCKEY_TEAMS = {
   BB: "Boston Bruins",
   SK: "Saskatoon Blades",
-  Kings: "Los Angeles Kings",
+  KINGS: "Los Angeles Kings",
   NFL: "Newfoundlands",
   FL: "Florida Panthers",
   DS: "Dallas Stars",
   TBL: "Tampa Bay Lightning",
   TL: "Toronto Maple Leafs",
   NHL: "National Hockey League",
+};
+
+export const HOCKEY_TEAMS_LOGOS = {
+  BB: "/assets/images/team_logo_bb.png",
+  SK: "/assets/images/team_logo_sk.png",
+  KINGS: "/assets/images/team_logo_kings.png",
+  NFL: "/assets/images/team_logo_nfl.png",
+  FL: "/assets/images/team_logo_fl.png",
+  DS: "/assets/images/team_logo_ds.png",
+  TBL: "/assets/images/team_logo_tbl.png",
+  TL: "/assets/images/team_logo_tl.png",
+  NHL: "/assets/images/team_logo_nhl.png",
+  NO_LOGO: "/assets/images/team_no_logo.png",
 };
 
 export const GAME_TYPE = {

@@ -79,8 +79,6 @@ const UpdatesSection = ({ latestUpdates, upcomingGame }) => {
               title={u.league}
               team1={u.team1}
               team2={u.team2}
-              team1Logo={u.team1Logo}
-              team2Logo={u.team2Logo}
               date={getDateString(u.dateTime, false)}
               team1Score={u.team1Score}
               team2Score={u.team2Score}

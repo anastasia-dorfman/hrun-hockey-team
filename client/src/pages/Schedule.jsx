@@ -44,7 +44,7 @@ const Schedule = () => {
   const { data } = useLoaderData();
   const games = data.games || [];
 
-  const gameDates = games.map((game) => parseISO(game.datetime));
+  const gameDates = games.map((game) => parseISO(game.dateTime));
   const earliestDate = min(gameDates);
   const latestDate = max(gameDates);
 
