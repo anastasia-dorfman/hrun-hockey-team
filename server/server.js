@@ -2,13 +2,6 @@ import "express-async-errors";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-console.log("Loaded environment variables:", {
-  EMAIL_HOST: process.env.EMAIL_HOST,
-  EMAIL_PORT: process.env.EMAIL_PORT,
-  EMAIL_USER: process.env.EMAIL_USER,
-  NODE_ENV: process.env.NODE_ENV,
-});
-
 import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
