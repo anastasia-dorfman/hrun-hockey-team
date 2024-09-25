@@ -1748,76 +1748,52 @@ export const mockGames = [
 
 export const mockNews = [
   {
-    _id: "Byfield signs 5-year contract with Kings",
     date: "2025-02-01T00:00:00.000",
     title: "Byfield signs 5-year contract with Kings",
     content:
-      "The 21-year-old forward, who was a restricted free agent, set NHL career highs in goals (20), assists (35) and points (55) in 80 ",
+      "Quinton Byfield, one of the most promising young talents in the NHL, has signed a five-year contract extension with the Los Angeles Kings. This deal comes after months of speculation about Byfield's future, as the 21-year-old forward was a restricted free agent after completing his entry-level contract. Byfield, who was drafted second overall in the 2020 NHL Draft, has steadily improved each season, showing his potential to become one of the league’s elite players. In the 2024-2025 season, Byfield set career highs in goals (20), assists (35), and points (55) in 80 games, cementing his status as a core player for the Kings. The Kings have shown faith in Byfield’s development, and the long-term contract indicates their belief in his ability to lead the team for years to come.\n\nByfield’s journey in the NHL began with high expectations after he was selected behind Alexis Lafrenière in the draft. Despite some initial struggles to adjust to the professional level, Byfield’s hard work and commitment to improving his game have paid off. His speed, size, and playmaking abilities have made him a versatile forward who can excel in both offensive and defensive situations. The Kings, a team in the midst of a rebuild, view Byfield as a cornerstone of their future, alongside other young stars such as Arthur Kaliyev and Gabriel Vilardi.\n\nThe contract is reportedly worth $35 million, carrying an average annual value of $7 million, making Byfield one of the highest-paid players on the Kings’ roster. The deal includes a no-trade clause in the final two years, giving Byfield some control over his future as he approaches the prime years of his career. For the Kings, locking up Byfield now ensures stability at the center position, as they continue to build a roster capable of competing in the Western Conference. The Kings have also made several other moves this offseason, including the acquisition of veteran defenseman Drew Doughty to provide leadership for the younger players.\n\nByfield, originally from Newmarket, Ontario, grew up idolizing players like Evgeni Malkin and Joe Thornton, two players known for their combination of size and skill. He has often been compared to Malkin due to his physical presence and ability to control the puck in the offensive zone. Standing at 6-foot-5 and weighing 220 pounds, Byfield is one of the largest players in the league, but he moves with the agility of a smaller forward, making him a unique threat on the ice. His coach, Todd McLellan, has praised Byfield’s work ethic and his desire to improve, noting that Byfield is never satisfied and is always looking for ways to elevate his game.\n\nThe Kings are banking on Byfield continuing his upward trajectory, as they look to return to the playoffs after missing out in recent seasons. With a young core in place and several key veterans still contributing, Los Angeles hopes to compete for the Stanley Cup in the coming years. Byfield’s new contract is a clear sign that the Kings believe he will play a major role in their quest for future success.",
     images: ["/assets/images/news_1.png"],
-    createdAt: "2024-07-07T16:20:28.623Z",
-    updatedAt: "2024-07-07T16:20:28.623Z",
     newsId: 1,
-    __v: 0,
   },
   {
-    _id: "668ac0bd7c530c1138b05e22",
     date: "2025-12-25T00:00:00.000",
     title: "Kuznetsov placed on unconditional waivers by Hurricanes",
     content:
-      "Evgeny Kuznetsov was placed on unconditional waivers by the Carolina Hurricanes on Wednesday for the purpose of terminating his contract. The 32-year-old forward had one season left on an eight-year, $62.4 million contract he signed with the Washington Capitals on July 2, 2017. It had an average annual value of $3.9 million ",
+      "The 2025-2026 NHL season is shaping up to be one of the most exciting in recent memory, with several high-profile players on new teams and a number of young stars looking to make their mark. The offseason was particularly eventful, with big trades and free-agent signings reshaping the rosters of several teams. The biggest move came when Connor McDavid was traded to the Toronto Maple Leafs in a blockbuster deal that sent shockwaves throughout the hockey world. The Leafs, long searching for a superstar to lead them to their first Stanley Cup since 1967, are hopeful that McDavid can be that player. McDavid, who had grown frustrated with the Edmonton Oilers’ inability to build a competitive team around him, is said to be excited about the opportunity to play in his hometown of Toronto.\n\nIn addition to McDavid’s move, the NHL saw other significant transactions, including the signing of Evgeny Kuznetsov by the Carolina Hurricanes. Kuznetsov, who was placed on unconditional waivers by the Washington Capitals to terminate his contract, quickly found a new home in Carolina. The Hurricanes, who are already one of the strongest teams in the Eastern Conference, believe Kuznetsov’s playmaking abilities will add another dimension to their already potent offense. Kuznetsov, who won the Stanley Cup with the Capitals in 2018, is eager to prove that he can still be an elite player in the league.\n\nMeanwhile, teams like the Colorado Avalanche and Tampa Bay Lightning remain among the favorites to compete for the Stanley Cup. The Avalanche, led by Nathan MacKinnon and Cale Makar, have one of the most dynamic rosters in the league, while the Lightning, who won back-to-back Cups in 2020 and 2021, are looking to bounce back after falling short in recent years. Both teams made significant moves in the offseason, with the Avalanche acquiring a top-tier goaltender and the Lightning adding depth to their defense.\n\nOn the individual front, several players are looking to bounce back from injuries that derailed their previous seasons. Jack Eichel, who was traded to the Vegas Golden Knights last year, is fully healthy for the first time in several years and is expected to be a major contributor for Vegas. Eichel, once considered one of the top young players in the league, is eager to remind everyone why he was selected second overall in the 2015 draft. Other players, like Steven Stamkos and Sidney Crosby, are also looking to put injury-plagued seasons behind them and lead their teams back to the playoffs.\n\nAs always, the NHL’s young talent will be a key storyline throughout the season. Players like Trevor Zegras, Cole Caufield, and Alexis Lafrenière are all expected to take the next step in their careers and establish themselves as the future faces of the league. Zegras, in particular, has captured the attention of fans with his highlight-reel goals and dazzling stickhandling abilities. The Anaheim Ducks forward is one of the most exciting players in the league and is poised to become a household name if he continues to develop at his current pace.\n\nOff the ice, the NHL continues to explore ways to grow the game globally. The league has already announced plans to play regular-season games in Europe next season, with matchups scheduled in Sweden, Finland, and Germany. The NHL is also exploring opportunities to expand its presence in Asia, with China being viewed as a potential market for future international games. The league’s commitment to growing the game internationally is part of its long-term strategy to increase its global fanbase and revenues.",
     images: ["/assets/images/news_2.png"],
-    createdAt: "2024-07-07T16:22:21.158Z",
-    updatedAt: "2024-07-07T16:22:21.158Z",
     newsId: 2,
-    __v: 0,
   },
   {
-    _id: "668ac1607c530c1138b05e28",
     date: "2024-02-08T00:00:00.000",
     title: "2023 BCHL Annual General Meeting Recap",
     content:
-      "Davin Beer The Brooks Bandits defeated the Surrey Eagles 4-1 in Game 2 of the Rocky Mountain Challenge to sweep the best-of-three series. 2003-born forward Hunter Wallace scored his second goal of the series to open the scoring for Brooks 6:32 into the first period. He was named the game’s first star, as ",
+      "The Stanley Cup playoffs are set to begin, and the excitement is palpable as fans and teams prepare for the most thrilling part of the NHL season. The playoffs are always a time when legends are made, and this year promises to be no different. With a number of teams considered legitimate contenders for the Cup, the competition is expected to be fierce from the opening round to the final. The Colorado Avalanche, last year’s champions, are looking to repeat, but they will face stiff competition from teams like the Tampa Bay Lightning, Boston Bruins, and Vegas Golden Knights.\n\nThe Avalanche, led by Nathan MacKinnon and Cale Makar, have been dominant all season long, finishing at the top of the Western Conference standings. MacKinnon, one of the best players in the world, has once again led the team in scoring, while Makar, the reigning Norris Trophy winner as the league’s best defenseman, has continued to elevate his game. The Avalanche have also received outstanding goaltending from Darcy Kuemper, who has been a rock between the pipes throughout the regular season. With a deep roster and plenty of playoff experience, Colorado enters the postseason as the favorite to win it all again.\n\nHowever, the Tampa Bay Lightning are not far behind. After winning back-to-back Stanley Cups in 2020 and 2021, the Lightning were eliminated in the second round last year, but they are determined to reclaim their throne. The Lightning are led by captain Steven Stamkos, who has had one of the best seasons of his career, and goaltender Andrei Vasilevskiy, who is widely regarded as the best netminder in the league. Tampa Bay has a deep and talented roster, with players like Nikita Kucherov, Brayden Point, and Victor Hedman all capable of taking over a game at any moment. The Lightning’s experience and championship pedigree make them one of the most dangerous teams in the playoffs.\n\nIn the Eastern Conference, the Boston Bruins have also been one of the league’s top teams this season, thanks in large part to the play of their top line, known as the “Perfection Line,” consisting of Patrice Bergeron, Brad Marchand, and David Pastrnak. The Bruins have one of the most balanced rosters in the league, with a mix of veteran leadership and young talent. Their defense, anchored by Charlie McAvoy, has been one of the stingiest in the league, and goaltender Linus Ullmark has emerged as one of the top goalies in the NHL. Boston has been dominant at home all season long, and they will look to use their home-ice advantage to make a deep playoff run.\n\nOne of the most intriguing teams in the playoffs this year is the Vegas Golden Knights. Vegas, which made a splash by trading for Jack Eichel last year, has been a force in the Western Conference, finishing second behind Colorado in the standings. Eichel, fully healthy for the first time in years, has been a game-changer for the Golden Knights, providing them with a dynamic offensive presence. The Golden Knights also have a strong supporting cast, with players like Mark Stone, Alex Pietrangelo, and Robin Lehner all playing key roles in the team’s success. Vegas has made deep playoff runs in the past, and they will be looking to make another push for the Cup this year.\n\nWhile the top teams are expected to dominate, the playoffs are always full of surprises, and lower-seeded teams like the Minnesota Wild, Florida Panthers, and New York Rangers all have the potential to upset the favorites and make a deep run. In the playoffs, anything can happen, and it often does. With so many talented teams and players competing for hockey’s ultimate prize, this year’s Stanley Cup playoffs promise to be must-watch entertainment from start to finish.",
     images: ["/assets/images/news_3.png"],
-    createdAt: "2024-07-07T16:25:04.134Z",
-    updatedAt: "2024-07-07T16:25:04.134Z",
     newsId: 3,
-    __v: 0,
   },
   {
-    _id: "668ac1ad7c530c1138b05e2e",
     date: "2024-04-08T00:00:00.000",
     title: "Fred Page Cup Finals Recap: Game 4",
     content:
       "Davin Beer The Brooks Bandits defeated the Surrey Eagles 4-1 in Game 2 of the Rocky Mountain Challenge to sweep the best-of-three series. 2003-born forward Hunter Wallace scored his second goal of the series to open the scoring for Brooks 6:32 into the first period. He was named the game’s first star, as ",
     images: ["/assets/images/news_4.png"],
-    createdAt: "2024-07-07T16:26:21.920Z",
-    updatedAt: "2024-07-07T16:26:21.920Z",
     newsId: 4,
-    __v: 0,
   },
   {
-    _id: "668ac1fe7c530c1138b05e34",
     date: "2024-06-30T00:00:00.000",
     title: "Brooks Bandits win 2021 Rocky Mountain Challenge",
     content:
-      "The 21-year-old forward, who was a restricted free agent, set NHL career highs in goals (20), assists (35) and points (55) in 80 ",
+      'Davin Beer The Brooks Bandits defeated the Surrey Eagles 4-1 in Game 2 of the Rocky Mountain Challenge to sweep the best-of-three series. 2003-born forward Hunter Wallace scored his second goal of the series to open the scoring for Brooks 6:32 into the first period. He was named the game\'s first star.\nThe BCHL held its 2024 Annual General Meeting (AGM) May 29 and 30 in Richmond, B.C. with several noteworthy items coming out of it.\nChair of the BCHL Board of Governors\nAfter six years as the Chair for the BCHL Board of Governors, Penticton Vees owner Graham Fraser has stepped down from his position and will be replaced by Trail Smoke Eaters owner Rich Murphy, effective immediately, after he was elected by his peers on the Board.\n"I am honoured that the Board of Governors has elected me as the new Chair of the BCHL," said Murphy, who purchased the Smoke Eaters along with his wife Annie in 2016. "This is an incredible honour, not only for me, but for Trail – the smallest market in the league, but one that has had a profound and historical impact on Canadian hockey. I share the honour and joy of holding this important position with my team and with our community.\n"Graham Fraser has done an excellent job and laid an incredible foundation for me and for our league. I look forward to doing my part in modernizing hockey within the BCHL and witnessing the positive changes happening in the ever-evolving world of junior hockey."\nFraser will remain on the league\'s Executive Committee going forward.\n"The BCHL would like to thank Graham Fraser for his tireless work over the past six years as Chair," said Commissioner Steven Cocker."He helped guide this league through some of its most formative years and his contribution was invaluable." "We are excited about the election of Rich Murphy as the new Chair. We are looking forward to picking up where we left off and continuing the growth of the BCHL for years to come."\nCommittee Elections\nThe following governors were elected to committees at this year\'s AGM.',
     images: ["/assets/images/news_5.png"],
-    createdAt: "2024-07-07T16:27:42.546Z",
-    updatedAt: "2024-07-07T16:27:42.546Z",
     newsId: 5,
-    __v: 0,
   },
   {
-    _id: "668ac290e54fcbf864f5b122",
     date: "2024-06-01T00:00:00.000",
     title: "Fred Page Cup Finals Recap: Game 4",
     content:
       "Davin Beer The Brooks Bandits defeated the Surrey Eagles 4-1 in Game 2 of the Rocky Mountain Challenge to sweep the best-of-three series. 2003-born forward Hunter Wallace scored his second goal of the series to open the scoring for Brooks 6:32 into the first period. He was named the game’s first star, as ",
     images: ["/assets/images/news_6.png"],
-    createdAt: "2024-07-07T16:30:08.038Z",
-    updatedAt: "2024-07-07T16:30:08.038Z",
     newsId: 6,
-    __v: 0,
   },
 ];
 

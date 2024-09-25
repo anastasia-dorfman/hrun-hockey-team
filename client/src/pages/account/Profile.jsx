@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useAccountContext } from "./AccountLayout";
+import { toast } from "react-hot-toast";
 import { useUser } from "../../context/UserContext";
 import ProfileCard from "../../components/account/ProfileCard";
 import Wrapper from "../../assets/wrappers/account/Profile";
 import { getDateString, parseAndValidateDate } from "../../utils/functions";
 import customFetch from "../../utils/customFetch";
-import { toast } from "react-hot-toast";
 
 const Profile = () => {
   const { user, updateUser } = useUser();

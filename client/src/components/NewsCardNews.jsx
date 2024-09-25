@@ -1,13 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { getDateString } from "../utils/functions";
 import Wrapper from "../assets/wrappers/NewsCardNews";
 
-const NewsCardNews = ({ id, date, img, title, content }) => {
-  const dateObject = new Date(date);
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
-    dateObject
-  );
+const NewsCardNews = ({ id, date, img, title, content, showTitle = true }) => {
+  const formattedDate = getDateString(new Date(date), false);
 
   const truncateContent = (text, maxLength) => {
     if (text.length <= maxLength) return text;
@@ -18,7 +15,7 @@ const NewsCardNews = ({ id, date, img, title, content }) => {
 
   return (
     <Wrapper>
-      <h3>{title}</h3>
+      {showTitle && <h3>{title}</h3>}
       <div className="image-container">
         <img src={img} alt={title} />
         <div className="date-overlay b1">{formattedDate}</div>
