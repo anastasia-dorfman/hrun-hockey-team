@@ -76,8 +76,9 @@ const Wrapper = styled.div`
               padding-right: 30px;
               border: 1px solid var(--color-b40-b60);
               border-radius: 8px;
-              background-color: var(--bg-primary);
+              background-color: var(--color-w-gb);
               outline: none;
+              color: var(--text-color, black);
 
               &:required:invalid {
                 color: var(--color-b60-od);
@@ -108,15 +109,15 @@ const Wrapper = styled.div`
               top: 50%;
               width: 0.6rem;
               height: 0.6rem;
-              border-right: 2px solid var(--color-b70-gb);
-              border-bottom: 2px solid var(--color-b70-gb);
+              border-right: 2px solid var(--black-70);
+              border-bottom: 2px solid var(--black-70);
               transform: translateY(-70%) rotate(45deg);
               pointer-events: none;
             }
           }
 
           input {
-            color: var(--text-secondary);
+            color: var(black);
             background-color: var(--color-w-gb);
             border: 1px solid var(--color-b40-b60);
             width: 100%;
