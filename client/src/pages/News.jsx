@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router-dom";
-// import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import NewsCardNews from "../components/NewsCardNews";
 import Wrapper from "../assets/wrappers/News";
 import customFetch from "../utils/customFetch";

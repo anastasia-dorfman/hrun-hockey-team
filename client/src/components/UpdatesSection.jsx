@@ -74,7 +74,7 @@ const UpdatesSection = ({ latestUpdates, upcomingGame }) => {
         <div className="home-page-section-container update-cards">
           {latestUpdates.map((u) => (
             <UpdateCard
-              key={u.id}
+              key={u.gameId}
               id={u.gameId}
               title={u.league}
               team1={u.team1}

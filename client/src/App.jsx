@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./pages/Layout";
 import Home, { loader as latestNewsLoader } from "./pages/Home";
 import News, { loader as newsLoader } from "./pages/News";
+import NewsContent, { loader as newsContentLoader } from "./pages/NewsContent";
 import Team, { loader as coachesLoader } from "./pages/Team";
 import TeamHistory, { loader as milestonesLoader } from "./pages/TeamHistory";
 // import StatsLayout from "./components/StatsLayout";
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home />, loader: latestNewsLoader },
       { path: "news", element: <News />, loader: newsLoader },
+      { path: "news/:id", element: <NewsContent />, loader: newsContentLoader },
       { path: "team", element: <Team />, loader: coachesLoader },
       { path: "history", element: <TeamHistory />, loader: milestonesLoader },
       {

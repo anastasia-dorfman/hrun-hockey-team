@@ -41,7 +41,6 @@ const Wrapper = styled.div`
   p {
     margin: 0;
     overflow: hidden;
-    /* Add this line */
     display: flex;
     align-items: flex-start;
   }

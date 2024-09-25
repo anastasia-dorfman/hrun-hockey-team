@@ -226,7 +226,7 @@ const Wrapper = styled.div`
 
         input {
           background-color: var(--black-10);
-          color: #000;
+          color: var(black);
           width: 5rem;
           text-align: center;
           border: none;
