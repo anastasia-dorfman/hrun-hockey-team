@@ -120,7 +120,7 @@ const Wrapper = styled.div`
           }
 
           input {
-            color: var(black);
+            color: black;
             background-color: var(--color-w-gb);
             border: 1px solid var(--color-b40-b60);
             width: 100%;
