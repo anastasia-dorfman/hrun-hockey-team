@@ -8,16 +8,9 @@ import ProductDetailCard from "../components/ProductDetailCard";
 import FormRow from "../components/shared/FormRow";
 import { CartContext } from "../context/CartContext";
 import customFetch from "../utils/customFetch";
-import { shouldUseMockData } from "../utils/environment";
-import { mockProducts } from "../data/mockData";
 
 export const loader = async ({ request }) => {
   try {
-    if (shouldUseMockData) {
-      return {
-        data: { products: mockProducts },
-      };
-    }
     const { data } = await customFetch.get("/products");
     return { data };
   } catch (error) {
@@ -147,7 +140,12 @@ const Cart = () => {
               />
               <button onClick={applyPromoCode}>Apply</button>
             </div>
-            <button className="checkout-btn selected">Go to checkout</button>
+            <button
+              className="checkout-btn selected"
+              disabled={cart.length === 0}
+            >
+              Go to checkout
+            </button>
           </form>
         </div>
       </div>
