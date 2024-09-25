@@ -18,41 +18,14 @@ const HockeySchool = () => {
     WEEKDAYS.SATURDAY,
   ];
 
-  // const formatTime = (timeString) => {
-  //   const [hours, minutes] = timeString.split(":");
-  //   const date = new Date(2000, 0, 1, hours, minutes);
-  //   return date.toLocaleTimeString("en-US", {
-  //     hour: "2-digit",
-  //     minute: "2-digit",
-  //   });
-  // };
-
-  // const formatTime = (timeString) => {
-  //   const date = parse(timeString, "HH:mm:ss", new Date());
-  //   return format(date, "h:mm a");
-  // };
-
   const getTrainingTime = (group, day) => {
     const schedule = group.schedule.find((s) => s.weekday === day);
     if (schedule) {
-      const startTime = formatTime(schedule.startTime);
-      const endTime = formatTime(schedule.endTime);
-      return `${formatTimeWithoutZeroMinutes(
-        startTime
-      )} - ${formatTimeWithoutZeroMinutes(endTime)}`;
+      const startTime = formatTime(schedule.startTime, false);
+      const endTime = formatTime(schedule.endTime, false);
+      return `${startTime} - ${endTime}`;
     }
     return "-";
-  };
-
-  const formatTimeWithoutZeroMinutes = (time) => {
-    const [timePart, period] = time.split(" ");
-    const [hours, minutes] = timePart.split(":");
-
-    if (minutes === "00") {
-      return `${hours} ${period}`;
-    }
-
-    return time;
   };
 
   return (

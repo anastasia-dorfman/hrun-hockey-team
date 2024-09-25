@@ -112,19 +112,6 @@ const Register = () => {
       }
     });
 
-    // setSelectedGroups({});
-    // setCheckedGroups({});
-
-    // document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
-    //   checkbox.checked = false;
-    // });
-
-    // document
-    //   .querySelectorAll('.quantity-selector input[type="number"]')
-    //   .forEach((input) => {
-    //     input.value = "1";
-    //   });
-
     showToast({
       type: "success",
       title: "You registered successfully!",

@@ -43,9 +43,23 @@ export const parseAndValidateDate = (date) => {
   return "Invalid Date";
 };
 
-export const formatTime = (timeString) => {
+export const formatTime = (timeString, withZeroMinutes = true) => {
   const date = parse(timeString, "HH:mm:ss", new Date());
-  return format(date, "h:mm a");
+
+  const timeWithZeroMinutes = format(date, "h:mm a");
+
+  if (!withZeroMinutes) {
+    const [timePart, period] = timeWithZeroMinutes.split(" ");
+    const [hours, minutes] = timePart.split(":");
+
+    if (minutes === "00") {
+      return `${hours} ${period}`;
+    }
+
+    return timeWithZeroMinutes;
+  }
+
+  return timeWithZeroMinutes;
 };
 
 export const calculateAge = (dob) => {
