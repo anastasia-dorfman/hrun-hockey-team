@@ -9,10 +9,9 @@ const Wrapper = styled.div`
   h3 {
     margin: 0;
     padding-bottom: 0.5rem;
-    /* Add these lines */
     display: flex;
     align-items: flex-start;
-    min-height: 3em; /* Adjust this value based on your font size and desired maximum title height */
+    min-height: 3em;
   }
 
   .image-container {

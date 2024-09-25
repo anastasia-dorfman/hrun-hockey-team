@@ -69,11 +69,11 @@ const NewsContent = () => {
         </div>
         <div className="top-news">
           <NewsCardNews
-            id={topNews[1].newsId}
-            img={topNews[1].images[0]}
-            date={topNews[1].date}
-            title={topNews[1].title}
-            content={topNews[1].content}
+            id={topNews[0].newsId}
+            img={topNews[0].images[0]}
+            date={topNews[0].date}
+            title={topNews[0].title}
+            content={topNews[0].content}
             showTitle={false}
           />
           <NewsCardNews
